@@ -1,3 +1,14 @@
 <ion-app>
+  <!-- Splash screen (condition to hide after initialization) -->
+  <div *ngIf="isSplashVisible" id="splash-screen" class="splash-screen">
+    <div class="logo-container">
+      <img src="assets/app_logo.png" alt="Splash Logo" class="splash-logo" />
+    </div>
+    <h1 class="splash-title">Welcome to Ionic Simulator</h1>
+    <p class="splash-tagline">Your ultimate app development companion</p>
+    <div class="loader"></div>
+  </div>
+
+  <!-- Main App content -->
   <ion-router-outlet></ion-router-outlet>
 </ion-app>

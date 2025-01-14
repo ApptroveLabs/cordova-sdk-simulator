@@ -1,0 +1,21 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <!-- Use navigateBack() here -->
+      <ion-button (click)="navigateBack()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Product Page</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <div class="content">
+    <img src="assets/trackierlogo.png" alt="Trackier Logo" class="logo" />
+    <img src="assets/chocochipcupcake.png" alt="Choco Chip Cupcake" class="product-image" />
+    <h3>Britannia Cupcake</h3>
+    <p>30.00 RS</p>
+    <ion-button expand="full" (click)="addToCart()">Add to Cart</ion-button>
+  </div>
+</ion-content>

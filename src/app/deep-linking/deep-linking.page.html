@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="navigateBack()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>DeepLink Screen</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen>
+  <div class="content">
+    <!-- Static message for waiting for a link -->
+    <ion-text class="loading-message">
+      Waiting for a link...
+    </ion-text>
+
+    <!-- Display three static images -->
+    <div class="image-container">
+      <ion-img src="assets/blueberrycupcake.jpeg" alt="Image 1"></ion-img>
+      <ion-img src="assets/chocochipcupcake.png" alt="Image 2"></ion-img>
+      <ion-img src="assets/vanillaccupake.jpeg" alt="Image 3"></ion-img>
+    </div>
+
+    <ion-button expand="full" class="back-button" (click)="navigateBack()">Back</ion-button>
+  </div>
+</ion-content>

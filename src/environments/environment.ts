@@ -2,9 +2,18 @@
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-export const environment = {
-  production: false
+export interface Environment {
+  production: boolean;
+  trackierSdkKey: string;
+}
+
+export const environment: Environment = {
+  production: false,
+  trackierSdkKey: 'ee9f21fb-5848-4ed9-8d9c-e4093e6d220c', // Your development SDK key
 };
+
+
+
 
 /*
  * For easier debugging in development mode, you can import the following file

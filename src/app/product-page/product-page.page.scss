@@ -1,0 +1,30 @@
+.content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+  }
+  
+  .logo {
+    width: 100%;
+    max-width: 300px; // Adjust as necessary
+    margin-bottom: 20px;
+  }
+  
+  .product-image {
+    width: 100%;
+    max-width: 300px; // Adjust as necessary
+    margin-bottom: 20px;
+  }
+  
+  h2, h3 {
+    text-align: center;
+    margin: 10px 0;
+  }
+  
+  p {
+    font-size: 20px;
+    text-align: center;
+    margin: 10px 0;
+  }

@@ -1,0 +1,83 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="navigateBack()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Custom Events</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Event ID</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-input
+        type="text"
+        [(ngModel)]="eventId"
+        placeholder="Enter Event ID"
+      ></ion-input>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Revenue</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-input
+        type="number"
+        [(ngModel)]="revenue"
+        placeholder="Enter revenue"
+      ></ion-input>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Select Currency</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-select [(ngModel)]="selectedCurrency" placeholder="Select Currency">
+        <ion-select-option *ngFor="let currency of currencyList" [value]="currency">
+          {{ currency }}
+        </ion-select-option>
+      </ion-select>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Parameters</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <div *ngFor="let param of params; let i = index" class="parameter-item">
+        <ion-item>
+          <ion-input
+            placeholder="Parameter Key"
+            [(ngModel)]="param.key"
+          ></ion-input>
+          <ion-input
+            placeholder="Parameter Value"
+            [(ngModel)]="param.value"
+          ></ion-input>
+          <ion-icon
+            name="trash"
+            (click)="removeParam(i)"
+            slot="end"
+          ></ion-icon>
+        </ion-item>
+      </div>
+      <ion-button expand="block" color="primary" (click)="addParam()">
+        Add Parameter
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-button expand="block" color="success" (click)="submitEvent()">
+    Submit Event
+  </ion-button>
+</ion-content>

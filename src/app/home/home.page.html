@@ -1,0 +1,39 @@
+<ion-header>
+</ion-header>
+
+<ion-content class="content-container">
+  <!-- Trackier Logo (Image) -->
+  <ion-img src="assets/trackierlogo.png" class="logo"></ion-img>
+
+  <ion-text class="welcome-text">
+    <h2>Welcome to UniLink Simulator</h2>
+    <p class="subheading">Track and manage your events with ease.</p>
+  </ion-text>
+
+  <div class="button-container">
+    <div class="event-card">
+      <ion-button expand="full" (click)="onButtonClick('Built-in events')" class="custom-button">
+        <ion-icon slot="start" name="list-circle-outline"></ion-icon>
+        Built-in events
+      </ion-button>
+    </div>
+    <div class="event-card">
+      <ion-button expand="full" (click)="onButtonClick('Customs Events')" class="custom-button">
+        <ion-icon slot="start" name="create-outline"></ion-icon>
+        Customs Events
+      </ion-button>
+    </div>
+    <div class="event-card">
+      <ion-button expand="full" (click)="onButtonClick('Deep linking Page')" class="custom-button">
+        <ion-icon slot="start" name="link-outline"></ion-icon>
+        Deep linking Page
+      </ion-button>
+    </div>
+    <div class="event-card">
+      <ion-button expand="full" (click)="onButtonClick('Product Page')" class="custom-button">
+        <ion-icon slot="start" name="pricetag-outline"></ion-icon>
+        Product Page
+      </ion-button>
+    </div>
+  </div>
+</ion-content>
