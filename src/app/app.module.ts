@@ -5,6 +5,7 @@ import { RouteReuseStrategy } from '@angular/router';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 
 import { TrackierCordovaPlugin, TrackierConfig, TrackierEnvironment } from '@awesome-cordova-plugins/trackier/ngx';  // Ensure correct path
+import { AdvertisingId } from '@capacitor-community/advertising-id';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -56,6 +57,9 @@ export class AppModule {
         .then(val => this.firebaseAnalytics.setUserProperty("ct_objectId", val))
         .catch(e => console.log('error: ', e));
       
+      // Get Apple Ads Token and send to SDK
+      this.getAppleAdsToken();
+      
       // Set up deferred deep link callback FIRST
       this.setupDeferredDeeplinkCallback();
       
@@ -75,6 +79,36 @@ export class AppModule {
     }).catch((error) => {
       console.error("Error initializing Trackier SDK:", error);
     });
+  }
+
+  // Get Apple Ads Token and send to Trackier SDK
+  private async getAppleAdsToken() {
+    try {
+      console.log("Getting Apple Ads Token...");
+      
+      // First request tracking authorization
+      const trackingResult = await AdvertisingId.requestTracking();
+      
+      if (trackingResult.value === 'Authorized') {
+        // Permission granted, get the advertising ID
+        const advertisingResult = await AdvertisingId.getAdvertisingId();
+        const token = advertisingResult.id;
+        
+        console.log("Apple Ads Token received:", token);
+        
+        if (token) {
+          this.trackierCordovaPlugin.updateAppleAdsToken(token);
+          console.log("Apple Ads Token sent to Trackier SDK successfully");
+        } else {
+          console.log("No Apple Ads Token available");
+        }
+      } else {
+        console.log("Tracking permission denied or restricted");
+      }
+      
+    } catch (error) {
+      console.error("Error getting Apple Ads Token:", error);
+    }
   }
 
   // Set up deferred deep link callback

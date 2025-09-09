@@ -16,3 +16,9 @@ project(':capacitor-keyboard').projectDir = new File('../node_modules/@capacitor
 
 include ':capacitor-status-bar'
 project(':capacitor-status-bar').projectDir = new File('../node_modules/@capacitor/status-bar/android')
+
+include ':capacitor-community-firebase-analytics'
+project(':capacitor-community-firebase-analytics').projectDir = new File('../node_modules/@capacitor-community/firebase-analytics/android')
+
+include ':capacitor-community-advertising-id'
+project(':capacitor-community-advertising-id').projectDir = new File('../node_modules/@capacitor-community/advertising-id/android')
