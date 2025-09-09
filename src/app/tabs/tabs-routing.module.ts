@@ -20,6 +20,10 @@ const routes: Routes = [
         loadChildren: () => import('../tab3/tab3.module').then(m => m.Tab3PageModule)
       },
       {
+        path: 'dynamic-link',
+        loadChildren: () => import('../dynamic-link/dynamic-link.module').then(m => m.DynamicLinkPageModule)
+      },
+      {
         path: '',
         redirectTo: '/tabs/tab1',
         pathMatch: 'full'

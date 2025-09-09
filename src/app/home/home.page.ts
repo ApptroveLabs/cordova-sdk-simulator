@@ -83,6 +83,8 @@ export class HomePage implements OnInit {
       this.router.navigate(['/deep-linking']);
     } else if (buttonName === 'Product Page') {
       this.router.navigate(['/product-page']);
+    } else if (buttonName === 'Dynamic Links') {
+      this.router.navigate(['/dynamic-link']);
     }
   }
 }

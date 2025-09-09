@@ -30,6 +30,14 @@ const routes: Routes = [
     path: 'add-to-cart-screen',
     loadChildren: () => import('./add-to-cart-screen/add-to-cart-screen.module').then( m => m.AddToCartScreenPageModule)
   },
+  {
+    path: 'dynamic-link',
+    loadChildren: () => import('./dynamic-link/dynamic-link.module').then( m => m.DynamicLinkPageModule)
+  },
+  {
+    path: 'tabs',
+    loadChildren: () => import('./tabs/tabs.module').then( m => m.TabsPageModule)
+  },
 ];
 @NgModule({
   imports: [

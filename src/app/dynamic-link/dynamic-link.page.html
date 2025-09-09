@@ -1,0 +1,87 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Dynamic Links</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Dynamic Links</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  
+  <div class="container">
+    
+    <!-- Dynamic Link Creation Section -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Create Dynamic Link</ion-card-title>
+      </ion-card-header>
+      
+      <ion-card-content>
+        <ion-button 
+          expand="block" 
+          (click)="createDynamicLink()" 
+          [disabled]="isLoading"
+          class="ion-margin-top">
+          <ion-spinner *ngIf="isLoading" name="crescent"></ion-spinner>
+          <ion-icon *ngIf="!isLoading" name="link" slot="start"></ion-icon>
+          {{ isLoading ? 'Creating...' : 'Create Dynamic Link' }}
+        </ion-button>
+
+        <!-- Created Link Display -->
+        <div *ngIf="createdDynamicLink" class="result-section">
+          <ion-item>
+            <ion-label>
+              <h3>Created Dynamic Link:</h3>
+              <p class="link-text">{{ createdDynamicLink }}</p>
+            </ion-label>
+            <ion-button 
+              fill="clear" 
+              size="small" 
+              (click)="copyToClipboard(createdDynamicLink)">
+              <ion-icon name="copy" slot="icon-only"></ion-icon>
+            </ion-button>
+          </ion-item>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Deep Link Resolution Section -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Resolve Deep Link</ion-card-title>
+      </ion-card-header>
+      
+      <ion-card-content>
+        <ion-button 
+          expand="block" 
+          (click)="testProvidedLink()" 
+          [disabled]="isLoading"
+          class="ion-margin-top">
+          <ion-spinner *ngIf="isLoading" name="crescent"></ion-spinner>
+          <ion-icon *ngIf="!isLoading" name="search" slot="start"></ion-icon>
+          {{ isLoading ? 'Resolving...' : 'Resolve Deep Link' }}
+        </ion-button>
+
+        <!-- Resolved Link Display -->
+        <div *ngIf="testResult" class="result-section">
+          <ion-item>
+            <ion-label>
+              <h3>Resolved Result:</h3>
+              <p class="link-text">{{ testResult }}</p>
+            </ion-label>
+            <ion-button 
+              fill="clear" 
+              size="small" 
+              (click)="copyToClipboard(testResult)">
+              <ion-icon name="copy" slot="icon-only"></ion-icon>
+            </ion-button>
+          </ion-item>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+  </div>
+</ion-content>
