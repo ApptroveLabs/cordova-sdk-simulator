@@ -83,5 +83,35 @@
       </ion-card-content>
     </ion-card>
 
+    <!-- Deferred Deep Link Callback Section -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Deferred Deep Link Callback</ion-card-title>
+      </ion-card-header>
+      
+      <ion-card-content>
+        <p class="ion-margin-bottom">Automatically listens for deferred deep links when user passes links through parseDeepLink.</p>
+
+        <!-- Deferred Deep Link Result Display -->
+        <div *ngIf="deferredDeeplinkResult" class="result-section">
+          <ion-item>
+            <ion-label>
+              <p class="link-text">{{ deferredDeeplinkResult }}</p>
+            </ion-label>
+            <ion-button 
+              fill="clear" 
+              size="small" 
+              (click)="copyToClipboard(deferredDeeplinkResult)">
+              <ion-icon name="copy" slot="icon-only"></ion-icon>
+            </ion-button>
+          </ion-item>
+        </div>
+        
+        <div *ngIf="!deferredDeeplinkResult" class="ion-text-center ion-margin-top">
+          <p class="ion-text-muted">Waiting for deferred deep link...</p>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
   </div>
 </ion-content>

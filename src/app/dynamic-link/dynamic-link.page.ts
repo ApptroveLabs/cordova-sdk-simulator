@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AlertController, ToastController, IonicModule } from '@ionic/angular';
 import { TrackierCordovaPlugin, TrackierEvent } from '@awesome-cordova-plugins/trackier/ngx';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Subscription } from 'rxjs';
+import { DeferredDeeplinkService } from '../services/deferred-deeplink.service';
 
 @Component({
   selector: 'app-dynamic-link',
@@ -11,21 +13,26 @@ import { FormsModule } from '@angular/forms';
   standalone: true,
   imports: [IonicModule, CommonModule, FormsModule]
 })
-export class DynamicLinkPage implements OnInit {
+export class DynamicLinkPage implements OnInit, OnDestroy {
 
   // Dynamic Link Creation - Results
   createdDynamicLink: string = '';
   testResult: string = '';
+  deferredDeeplinkResult: string = '';
   isLoading: boolean = false;
+  private deferredDeeplinkSubscription?: Subscription;
 
   constructor(
     private trackier: TrackierCordovaPlugin,
     private alertController: AlertController,
-    private toastController: ToastController
+    private toastController: ToastController,
+    private deferredDeeplinkService: DeferredDeeplinkService
   ) { }
 
   ngOnInit() {
     this.initializePlugin();
+    // Listen to deferred deeplink from service
+    this.setupDeferredDeeplinkListener();
   }
 
   async initializePlugin() {
@@ -151,7 +158,29 @@ export class DynamicLinkPage implements OnInit {
     await toast.present();
   }
 
-  // Copy to clipboard
+  // Setup Deferred Deep Link Listener (from service)
+  private setupDeferredDeeplinkListener() {
+    try {
+      // Listen to deferred deeplink from the service
+      this.deferredDeeplinkSubscription = this.deferredDeeplinkService.deferredDeeplink$.subscribe({
+        next: (url: string) => {
+          if (url) {
+            this.deferredDeeplinkResult = url;
+            this.showToast('Deferred deep link received!');
+            console.log('Deferred deep link received in page:', url);
+          }
+        },
+        error: (error: any) => {
+          console.error('Error in deferred deeplink service subscription:', error);
+        }
+      });
+      
+      console.log('Deferred deeplink service listener set up');
+    } catch (error) {
+      console.error('Error setting up deferred deeplink service listener:', error);
+    }
+  }
+
   async copyToClipboard(text: string) {
     try {
       await navigator.clipboard.writeText(text);
@@ -159,6 +188,13 @@ export class DynamicLinkPage implements OnInit {
     } catch (error) {
       console.error('Error copying to clipboard:', error);
       await this.showToast('Error copying to clipboard');
+    }
+  }
+
+  ngOnDestroy() {
+    // Clean up subscription when component is destroyed
+    if (this.deferredDeeplinkSubscription) {
+      this.deferredDeeplinkSubscription.unsubscribe();
     }
   }
 }

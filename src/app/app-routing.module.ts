@@ -5,7 +5,7 @@ import { HomePage } from './home/home.page';  // Import HomePage directly
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
-  { path: 'home', loadChildren: () => import('./home/home.module').then(m => m.HomePageModule) },
+  { path: 'home', loadComponent: () => import('./home/home.page').then(m => m.HomePage) },
   {
     path: 'built-in-events',
     loadChildren: () => import('./built-in-events/built-in-events.module').then( m => m.BuiltInEventsPageModule)
@@ -37,6 +37,10 @@ const routes: Routes = [
   {
     path: 'tabs',
     loadChildren: () => import('./tabs/tabs.module').then( m => m.TabsPageModule)
+  },
+  {
+    path: 'complete-event',
+    loadComponent: () => import('./complete-event/complete-event.page').then(m => m.CompleteEventPage)
   },
 ];
 @NgModule({
