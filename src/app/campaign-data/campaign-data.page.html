@@ -1,0 +1,150 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Campaign Data
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="refreshData()" [disabled]="isLoading">
+        <ion-icon name="refresh" *ngIf="!isLoading"></ion-icon>
+        <ion-spinner *ngIf="isLoading"></ion-spinner>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Campaign Data</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div class="container">
+    <!-- Error Message -->
+    <ion-card *ngIf="errorMessage" color="danger">
+      <ion-card-content>
+        <ion-icon name="warning" slot="start"></ion-icon>
+        {{ errorMessage }}
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="loading-container">
+      <ion-spinner></ion-spinner>
+      <p>Retrieving campaign data...</p>
+    </div>
+
+    <!-- Campaign Data Display -->
+    <div *ngIf="!isLoading">
+      
+      <!-- Basic Information -->
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>Basic Information</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-item>
+            <ion-label>
+              <h3>Trackier ID</h3>
+              <p>{{ campaignData.trackierId || 'Not available' }}</p>
+            </ion-label>
+            <ion-button slot="end" fill="clear" size="small" (click)="copyToClipboard(campaignData.trackierId)">
+              <ion-icon name="copy"></ion-icon>
+            </ion-button>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>
+              <h3>Click ID</h3>
+              <p>{{ campaignData.clickId || 'Not available' }}</p>
+            </ion-label>
+            <ion-button slot="end" fill="clear" size="small" (click)="copyToClipboard(campaignData.clickId)">
+              <ion-icon name="copy"></ion-icon>
+            </ion-button>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>
+              <h3>Partner ID</h3>
+              <p>{{ campaignData.pid || 'Not available' }}</p>
+            </ion-label>
+            <ion-button slot="end" fill="clear" size="small" (click)="copyToClipboard(campaignData.pid)">
+              <ion-icon name="copy"></ion-icon>
+            </ion-button>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>
+              <h3>Deep Link Value</h3>
+              <p>{{ campaignData.dlv || 'Not available' }}</p>
+            </ion-label>
+            <ion-button slot="end" fill="clear" size="small" (click)="copyToClipboard(campaignData.dlv)">
+              <ion-icon name="copy"></ion-icon>
+            </ion-button>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>
+              <h3>Is Retargeting</h3>
+              <p>{{ campaignData.isRetargeting ? 'Yes' : 'No' }}</p>
+            </ion-label>
+          </ion-item>
+        </ion-card-content>
+      </ion-card>
+
+      <!-- Campaign Information -->
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>Campaign Information</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-item>
+            <ion-label>
+              <h3>Campaign Name</h3>
+              <p>{{ campaignData.campaign || 'Not available' }}</p>
+            </ion-label>
+            <ion-button slot="end" fill="clear" size="small" (click)="copyToClipboard(campaignData.campaign)">
+              <ion-icon name="copy"></ion-icon>
+            </ion-button>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>
+              <h3>Campaign ID</h3>
+              <p>{{ campaignData.campaignId || 'Not available' }}</p>
+            </ion-label>
+            <ion-button slot="end" fill="clear" size="small" (click)="copyToClipboard(campaignData.campaignId)">
+              <ion-icon name="copy"></ion-icon>
+            </ion-button>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>
+              <h3>Channel</h3>
+              <p>{{ campaignData.channel || 'Not available' }}</p>
+            </ion-label>
+            <ion-button slot="end" fill="clear" size="small" (click)="copyToClipboard(campaignData.channel)">
+              <ion-icon name="copy"></ion-icon>
+            </ion-button>
+          </ion-item>
+        </ion-card-content>
+      </ion-card>
+
+      <!-- Action Buttons -->
+      <ion-card>
+        <ion-card-content>
+          <ion-button expand="block" (click)="trackEvent()" color="primary">
+            <ion-icon name="analytics" slot="start"></ion-icon>
+            Track Test Event
+          </ion-button>
+          
+          <ion-button expand="block" (click)="refreshData()" fill="outline" color="secondary">
+            <ion-icon name="refresh" slot="start"></ion-icon>
+            Refresh Data
+          </ion-button>
+        </ion-card-content>
+      </ion-card>
+
+    </div>
+  </div>
+</ion-content>

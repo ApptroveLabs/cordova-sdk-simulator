@@ -6,6 +6,7 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 
 import { TrackierCordovaPlugin, TrackierConfig, TrackierEnvironment } from '@awesome-cordova-plugins/trackier/ngx';  // Ensure correct path
 import { AdvertisingId } from '@capacitor-community/advertising-id';
+import { Platform } from '@ionic/angular';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -36,7 +37,8 @@ export class AppModule {
     private splashScreen: SplashScreen,  // Injected SplashScreen
     private router: Router,  // Inject Router for navigation
     private deferredDeeplinkService: DeferredDeeplinkService,
-    private firebaseAnalytics: FirebaseAnalyticsService
+    private firebaseAnalytics: FirebaseAnalyticsService,
+    private platform: Platform
   ) {
     // Initialize the Trackier SDK 
     this.initializeTrackierSDK();
@@ -46,7 +48,7 @@ export class AppModule {
   private initializeTrackierSDK() {
     const key = "ee9f21fb-5848-4ed9-8d9c-e4093e6d220c";  // Replace with your actual SDK key
     const trackierConfig = new TrackierConfig(key, TrackierEnvironment.Development);  // or Production as per your needs
-    trackierConfig.setAppSecret("659fb6f1xxxxxxxa29d46c9", "9258fcdb-a7a7-xxxxx-xxxx-65835ed38407"); // Pass secretId and secretKey
+    // trackierConfig.setAppSecret("659fb6f1xxxxxxxa29d46c9", "9258fcdb-a7a7-xxxxx-xxxx-65835ed38407"); // Pass secretId and secretKey
     trackierConfig.setAndroidId("User Android Id 1234567890"); // Only for andorid device
     trackierConfig.setFacebookAppId("Your Facebook App id "); // Only for Android device or Android Sdk
     this.trackierCordovaPlugin.initializeSDK(trackierConfig).then(() => {
@@ -57,8 +59,10 @@ export class AppModule {
         .then(val => this.firebaseAnalytics.setUserProperty("ct_objectId", val))
         .catch(e => console.log('error: ', e));
       
-      // Get Apple Ads Token and send to SDK
-      this.getAppleAdsToken();
+      // Get Apple Ads Token and send to SDK (iOS only)
+      if (this.platform.is('ios')) {
+        this.getAppleAdsToken();
+      }
       
       // Set up deferred deep link callback FIRST
       this.setupDeferredDeeplinkCallback();
@@ -84,6 +88,12 @@ export class AppModule {
   // Get Apple Ads Token and send to Trackier SDK
   private async getAppleAdsToken() {
     try {
+      // Only run on iOS
+      if (!this.platform.is('ios')) {
+        console.log("Apple Ads Token only available on iOS");
+        return;
+      }
+      
       console.log("Getting Apple Ads Token...");
       
       // First request tracking authorization

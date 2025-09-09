@@ -16,7 +16,6 @@ def capacitor_pods
   pod 'CapacitorHaptics', :path => '../../node_modules/@capacitor/haptics'
   pod 'CapacitorKeyboard', :path => '../../node_modules/@capacitor/keyboard'
   pod 'CapacitorStatusBar', :path => '../../node_modules/@capacitor/status-bar'
-  pod 'CapacitorCommunityFirebaseAnalytics', :path => '../../node_modules/@capacitor-community/firebase-analytics'
   pod 'CapacitorCommunityAdvertisingId', :path => '../../node_modules/@capacitor-community/advertising-id'
   pod 'CordovaPluginsStatic', :path => '../capacitor-cordova-ios-plugins'
 end

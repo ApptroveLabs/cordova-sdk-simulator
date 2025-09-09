@@ -42,6 +42,10 @@ const routes: Routes = [
     path: 'complete-event',
     loadComponent: () => import('./complete-event/complete-event.page').then(m => m.CompleteEventPage)
   },
+  {
+    path: 'campaign-data',
+    loadChildren: () => import('./campaign-data/campaign-data.module').then( m => m.CampaignDataPageModule)
+  },
 ];
 @NgModule({
   imports: [

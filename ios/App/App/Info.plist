@@ -45,5 +45,7 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
+	<key>NSUserTrackingUsageDescription</key>
+	<string>This app uses tracking to provide personalized ads and improve your experience. Your data helps us deliver relevant content and measure campaign effectiveness.</string>
 </dict>
 </plist>

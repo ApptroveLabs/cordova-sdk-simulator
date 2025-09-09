@@ -6,6 +6,8 @@ PODS:
     - Capacitor
   - CapacitorCamera (6.1.2):
     - Capacitor
+  - CapacitorCommunityAdvertisingId (6.0.0):
+    - Capacitor
   - CapacitorCordova (7.4.3)
   - CapacitorHaptics (6.0.2):
     - Capacitor
@@ -27,6 +29,7 @@ DEPENDENCIES:
   - "Capacitor (from `../../node_modules/@capacitor/ios`)"
   - "CapacitorApp (from `../../node_modules/@capacitor/app`)"
   - "CapacitorCamera (from `../../node_modules/@capacitor/camera`)"
+  - "CapacitorCommunityAdvertisingId (from `../../node_modules/@capacitor-community/advertising-id`)"
   - "CapacitorCordova (from `../../node_modules/@capacitor/ios`)"
   - "CapacitorHaptics (from `../../node_modules/@capacitor/haptics`)"
   - "CapacitorKeyboard (from `../../node_modules/@capacitor/keyboard`)"
@@ -47,6 +50,8 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@capacitor/app"
   CapacitorCamera:
     :path: "../../node_modules/@capacitor/camera"
+  CapacitorCommunityAdvertisingId:
+    :path: "../../node_modules/@capacitor-community/advertising-id"
   CapacitorCordova:
     :path: "../../node_modules/@capacitor/ios"
   CapacitorHaptics:
@@ -63,6 +68,7 @@ SPEC CHECKSUMS:
   Capacitor: 28d6c01026a9a3f7156529498ec1f389a2a28dbc
   CapacitorApp: e1e6b7d05e444d593ca16fd6d76f2b7c48b5aea7
   CapacitorCamera: 9bc7b005d0e6f1d5f525b8137045b60cffffce79
+  CapacitorCommunityAdvertisingId: a23ef26421e53d88a39ef352ffb4502c7aef0c24
   CapacitorCordova: 435121e81a2df4d0034f0fb11fcefab5104cfdb5
   CapacitorHaptics: 4fc15afe22b123d093e6ace24d95e8e3b1f261b9
   CapacitorKeyboard: e89189ad398b815b6ff7e52271f0fb4f911a0a0a
@@ -72,6 +78,6 @@ SPEC CHECKSUMS:
   trackier-ios-sdk: 4a8a2e3cc45e2a8fc7f9fd0be77e90578b8f9936
   Willow: a6310f9aedcb6f4de8c35b94fd3416a660ae9280
 
-PODFILE CHECKSUM: 11ee63468d3ee85e706485015f540a3393ea5e75
+PODFILE CHECKSUM: 6d50655170b5a05a21bc9836f0157ee210508c12
 
 COCOAPODS: 1.16.2

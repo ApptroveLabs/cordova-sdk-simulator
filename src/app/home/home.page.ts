@@ -92,6 +92,13 @@ export class HomePage implements OnInit {
       }).catch(error => {
         console.error('Complete Event navigation error:', error);
       });
+    } else if (buttonName === 'Campaign Data') {
+      console.log('Campaign Data button clicked - attempting navigation...');
+      this.router.navigate(['/campaign-data']).then(success => {
+        console.log('Campaign Data navigation success:', success);
+      }).catch(error => {
+        console.error('Campaign Data navigation error:', error);
+      });
     }
   }
 }
