@@ -40,7 +40,7 @@ const routes: Routes = [
   },
   {
     path: 'complete-event',
-    loadComponent: () => import('./complete-event/complete-event.page').then(m => m.CompleteEventPage)
+    loadChildren: () => import('./complete-event/complete-event.module').then( m => m.CompleteEventPageModule)
   },
   {
     path: 'campaign-data',

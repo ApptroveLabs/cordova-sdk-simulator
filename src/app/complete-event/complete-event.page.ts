@@ -1,15 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { IonicModule } from '@ionic/angular';
-import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
 import { TrackierCordovaPlugin, TrackierEvent } from '@awesome-cordova-plugins/trackier/ngx';
 
 @Component({
   selector: 'app-complete-event',
   templateUrl: './complete-event.page.html',
-  styleUrls: ['./complete-event.page.scss'],
-  standalone: true,
-  imports: [IonicModule, FormsModule, CommonModule]
+  styleUrls: ['./complete-event.page.scss']
 })
 export class CompleteEventPage implements OnInit {
 
