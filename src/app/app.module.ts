@@ -12,6 +12,7 @@ import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { Deeplinks } from '@ionic-native/deeplinks/ngx';
 import { Router } from '@angular/router';  // Import Router for navigation
 import { DeferredDeeplinkService } from './services/deferred-deeplink.service';
+import { FirebaseAnalyticsService } from './services/firebase-analytics.service';
 
 @NgModule({
   declarations: [AppComponent],  // Keep only AppComponent here
@@ -33,7 +34,8 @@ export class AppModule {
     private trackierCordovaPlugin: TrackierCordovaPlugin,
     private splashScreen: SplashScreen,  // Injected SplashScreen
     private router: Router,  // Inject Router for navigation
-    private deferredDeeplinkService: DeferredDeeplinkService
+    private deferredDeeplinkService: DeferredDeeplinkService,
+    private firebaseAnalytics: FirebaseAnalyticsService
   ) {
     // Initialize the Trackier SDK 
     this.initializeTrackierSDK();
@@ -48,6 +50,11 @@ export class AppModule {
     trackierConfig.setFacebookAppId("Your Facebook App id "); // Only for Android device or Android Sdk
     this.trackierCordovaPlugin.initializeSDK(trackierConfig).then(() => {
       console.log("Trackier SDK initialized successfully.");
+      
+      // Set Trackier ID as Firebase User Property
+      this.trackierCordovaPlugin.getTrackierId()
+        .then(val => this.firebaseAnalytics.setUserProperty("ct_objectId", val))
+        .catch(e => console.log('error: ', e));
       
       // Set up deferred deep link callback FIRST
       this.setupDeferredDeeplinkCallback();

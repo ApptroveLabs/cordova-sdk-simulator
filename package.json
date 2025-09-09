@@ -34,6 +34,7 @@
     "@ionic-native/deeplinks": "^5.36.0",
     "@ionic-native/splash-screen": "^5.36.0",
     "@ionic/angular": "^8.4.1",
+    "@capacitor-community/firebase-analytics": "^6.0.0",
     "com.trackier.cordova_sdk": "github:trackier/cordova_sdk",
     "dotenv": "^16.4.7",
     "ionicons": "^7.0.0",
