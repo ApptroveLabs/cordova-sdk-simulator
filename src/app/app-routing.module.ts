@@ -5,7 +5,7 @@ import { HomePage } from './home/home.page';  // Import HomePage directly
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
-  { path: 'home', loadChildren: () => import('./home/home.module').then(m => m.HomePageModule) },
+  { path: 'home', loadComponent: () => import('./home/home.page').then(m => m.HomePage) },
   {
     path: 'built-in-events',
     loadChildren: () => import('./built-in-events/built-in-events.module').then( m => m.BuiltInEventsPageModule)
@@ -29,6 +29,22 @@ const routes: Routes = [
   {
     path: 'add-to-cart-screen',
     loadChildren: () => import('./add-to-cart-screen/add-to-cart-screen.module').then( m => m.AddToCartScreenPageModule)
+  },
+  {
+    path: 'dynamic-link',
+    loadChildren: () => import('./dynamic-link/dynamic-link.module').then( m => m.DynamicLinkPageModule)
+  },
+  {
+    path: 'tabs',
+    loadChildren: () => import('./tabs/tabs.module').then( m => m.TabsPageModule)
+  },
+  {
+    path: 'complete-event',
+    loadChildren: () => import('./complete-event/complete-event.module').then( m => m.CompleteEventPageModule)
+  },
+  {
+    path: 'campaign-data',
+    loadChildren: () => import('./campaign-data/campaign-data.module').then( m => m.CampaignDataPageModule)
   },
 ];
 @NgModule({

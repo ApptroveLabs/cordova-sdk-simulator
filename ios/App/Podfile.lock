@@ -1,0 +1,83 @@
+PODS:
+  - Alamofire (5.9.1)
+  - Capacitor (7.4.3):
+    - CapacitorCordova
+  - CapacitorApp (6.0.2):
+    - Capacitor
+  - CapacitorCamera (6.1.2):
+    - Capacitor
+  - CapacitorCommunityAdvertisingId (6.0.0):
+    - Capacitor
+  - CapacitorCordova (7.4.3)
+  - CapacitorHaptics (6.0.2):
+    - Capacitor
+  - CapacitorKeyboard (6.0.3):
+    - Capacitor
+  - CapacitorStatusBar (6.0.2):
+    - Capacitor
+  - CordovaPluginsStatic (6.2.0):
+    - CapacitorCordova
+    - trackier-ios-sdk (~> 1.6.74)
+  - CryptoSwift (1.4.3)
+  - trackier-ios-sdk (1.6.74):
+    - Alamofire (~> 5.9.0)
+    - CryptoSwift (~> 1.4.1)
+    - Willow (~> 5.0)
+  - Willow (5.2.1)
+
+DEPENDENCIES:
+  - "Capacitor (from `../../node_modules/@capacitor/ios`)"
+  - "CapacitorApp (from `../../node_modules/@capacitor/app`)"
+  - "CapacitorCamera (from `../../node_modules/@capacitor/camera`)"
+  - "CapacitorCommunityAdvertisingId (from `../../node_modules/@capacitor-community/advertising-id`)"
+  - "CapacitorCordova (from `../../node_modules/@capacitor/ios`)"
+  - "CapacitorHaptics (from `../../node_modules/@capacitor/haptics`)"
+  - "CapacitorKeyboard (from `../../node_modules/@capacitor/keyboard`)"
+  - "CapacitorStatusBar (from `../../node_modules/@capacitor/status-bar`)"
+  - CordovaPluginsStatic (from `../capacitor-cordova-ios-plugins`)
+
+SPEC REPOS:
+  trunk:
+    - Alamofire
+    - CryptoSwift
+    - trackier-ios-sdk
+    - Willow
+
+EXTERNAL SOURCES:
+  Capacitor:
+    :path: "../../node_modules/@capacitor/ios"
+  CapacitorApp:
+    :path: "../../node_modules/@capacitor/app"
+  CapacitorCamera:
+    :path: "../../node_modules/@capacitor/camera"
+  CapacitorCommunityAdvertisingId:
+    :path: "../../node_modules/@capacitor-community/advertising-id"
+  CapacitorCordova:
+    :path: "../../node_modules/@capacitor/ios"
+  CapacitorHaptics:
+    :path: "../../node_modules/@capacitor/haptics"
+  CapacitorKeyboard:
+    :path: "../../node_modules/@capacitor/keyboard"
+  CapacitorStatusBar:
+    :path: "../../node_modules/@capacitor/status-bar"
+  CordovaPluginsStatic:
+    :path: "../capacitor-cordova-ios-plugins"
+
+SPEC CHECKSUMS:
+  Alamofire: f36a35757af4587d8e4f4bfa223ad10be2422b8c
+  Capacitor: 28d6c01026a9a3f7156529498ec1f389a2a28dbc
+  CapacitorApp: e1e6b7d05e444d593ca16fd6d76f2b7c48b5aea7
+  CapacitorCamera: 9bc7b005d0e6f1d5f525b8137045b60cffffce79
+  CapacitorCommunityAdvertisingId: a23ef26421e53d88a39ef352ffb4502c7aef0c24
+  CapacitorCordova: 435121e81a2df4d0034f0fb11fcefab5104cfdb5
+  CapacitorHaptics: 4fc15afe22b123d093e6ace24d95e8e3b1f261b9
+  CapacitorKeyboard: e89189ad398b815b6ff7e52271f0fb4f911a0a0a
+  CapacitorStatusBar: b16799a26320ffa52f6c8b01737d5a95bbb8f3eb
+  CordovaPluginsStatic: 7c3a89fda4eb4bf51c97e2b60f195d5b81c722e3
+  CryptoSwift: a0799ee936271bd2253a006f1e4523df21845000
+  trackier-ios-sdk: 4a8a2e3cc45e2a8fc7f9fd0be77e90578b8f9936
+  Willow: a6310f9aedcb6f4de8c35b94fd3416a660ae9280
+
+PODFILE CHECKSUM: 6d50655170b5a05a21bc9836f0157ee210508c12
+
+COCOAPODS: 1.16.2

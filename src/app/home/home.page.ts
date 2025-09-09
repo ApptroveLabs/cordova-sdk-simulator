@@ -83,6 +83,22 @@ export class HomePage implements OnInit {
       this.router.navigate(['/deep-linking']);
     } else if (buttonName === 'Product Page') {
       this.router.navigate(['/product-page']);
+    } else if (buttonName === 'Dynamic Links') {
+      this.router.navigate(['/dynamic-link']);
+    } else if (buttonName === 'Complete Event') {
+      console.log('Complete Event button clicked - attempting navigation...');
+      this.router.navigate(['/complete-event']).then(success => {
+        console.log('Complete Event navigation success:', success);
+      }).catch(error => {
+        console.error('Complete Event navigation error:', error);
+      });
+    } else if (buttonName === 'Campaign Data') {
+      console.log('Campaign Data button clicked - attempting navigation...');
+      this.router.navigate(['/campaign-data']).then(success => {
+        console.log('Campaign Data navigation success:', success);
+      }).catch(error => {
+        console.error('Campaign Data navigation error:', error);
+      });
     }
   }
 }

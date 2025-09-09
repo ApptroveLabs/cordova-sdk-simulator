@@ -1,0 +1,161 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Complete Event</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Complete Event</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div class="container">
+    <!-- Event Details Section -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Event Details</ion-card-title>
+        <ion-card-subtitle>Configure your event parameters</ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <ion-item>
+            <ion-label position="stacked">Event ID</ion-label>
+            <ion-input [(ngModel)]="eventDetails.eventId" placeholder="Enter Event ID"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="stacked">Order ID</ion-label>
+            <ion-input [(ngModel)]="eventDetails.orderId" placeholder="Enter Order ID"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="stacked">Product ID</ion-label>
+            <ion-input [(ngModel)]="eventDetails.productId" placeholder="Enter Product ID"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="stacked">Currency</ion-label>
+            <ion-input [(ngModel)]="eventDetails.currency" placeholder="Enter Currency (e.g., USD)"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="stacked">Coupon Code</ion-label>
+            <ion-input [(ngModel)]="eventDetails.couponCode" placeholder="Enter Coupon Code"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="stacked">Discount</ion-label>
+            <ion-input type="number" [(ngModel)]="eventDetails.discount" placeholder="Enter Discount Amount"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="stacked">Revenue</ion-label>
+            <ion-input type="number" [(ngModel)]="eventDetails.revenue" placeholder="Enter Revenue Amount"></ion-input>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Custom Parameters Section -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Custom Parameters</ion-card-title>
+        <ion-card-subtitle>Configure Param1 to Param10 values</ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <ion-item *ngFor="let param of getParamEntries()">
+            <ion-label position="stacked">{{ param.key }}</ion-label>
+            <ion-input [(ngModel)]="eventDetails.params[param.key.toLowerCase()]" placeholder="Enter {{ param.key }} value"></ion-input>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Custom Values Section -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Custom Event Values</ion-card-title>
+        <ion-card-subtitle>Configure additional key-value pairs</ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <ion-item *ngFor="let customValue of getCustomValueEntries()">
+            <ion-label position="stacked">{{ customValue.key }}</ion-label>
+            <ion-input [(ngModel)]="eventDetails.customValues[customValue.key]" placeholder="Enter {{ customValue.key }} value"></ion-input>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- User Details Section -->
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>User Details</ion-card-title>
+        <ion-card-subtitle>Configure user information for SDK</ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <ion-item>
+            <ion-label position="stacked">User ID</ion-label>
+            <ion-input [(ngModel)]="eventDetails.userDetails.userId" placeholder="Enter User ID"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="stacked">Email</ion-label>
+            <ion-input type="email" [(ngModel)]="eventDetails.userDetails.email" placeholder="Enter Email"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="stacked">Name</ion-label>
+            <ion-input [(ngModel)]="eventDetails.userDetails.name" placeholder="Enter Full Name"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="stacked">Phone</ion-label>
+            <ion-input type="tel" [(ngModel)]="eventDetails.userDetails.phone" placeholder="Enter Phone Number"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="stacked">Date of Birth</ion-label>
+            <ion-input type="date" [(ngModel)]="eventDetails.userDetails.dob" placeholder="Enter Date of Birth"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="stacked">Gender</ion-label>
+            <ion-select [(ngModel)]="eventDetails.userDetails.gender" placeholder="Select Gender">
+              <ion-select-option value="Male">Male</ion-select-option>
+              <ion-select-option value="Female">Female</ion-select-option>
+              <ion-select-option value="Others">Others</ion-select-option>
+            </ion-select>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Action Buttons -->
+    <ion-card>
+      <ion-card-content>
+        <ion-button 
+          expand="block" 
+          color="primary" 
+          (click)="sendCompleteEvent()"
+          [disabled]="isLoading">
+          <ion-spinner *ngIf="isLoading" name="crescent"></ion-spinner>
+          <ion-icon *ngIf="!isLoading" name="send" slot="start"></ion-icon>
+          {{ isLoading ? 'Sending Event...' : 'Send Complete Event' }}
+        </ion-button>
+        
+        <ion-button 
+          expand="block" 
+          color="medium" 
+          fill="outline"
+          (click)="resetToDefaults()"
+          [disabled]="isLoading">
+          <ion-icon name="refresh" slot="start"></ion-icon>
+          Reset to Defaults
+        </ion-button>
+        
+        <!-- Success Message -->
+        <ion-item *ngIf="isEventSent" color="success">
+          <ion-icon name="checkmark-circle" slot="start"></ion-icon>
+          <ion-label>
+            <h2>Event Sent Successfully!</h2>
+            <p>Complete registration event has been tracked</p>
+          </ion-label>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

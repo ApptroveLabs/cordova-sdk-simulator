@@ -35,5 +35,23 @@
         Product Page
       </ion-button>
     </div>
+    <div class="event-card">
+      <ion-button expand="full" (click)="onButtonClick('Dynamic Links')" class="custom-button">
+        <ion-icon slot="start" name="link-outline"></ion-icon>
+        Dynamic Links
+      </ion-button>
+    </div>
+    <div class="event-card">
+      <ion-button expand="full" (click)="onButtonClick('Complete Event')" class="custom-button" id="complete-event-btn">
+        <ion-icon slot="start" name="checkmark-circle-outline"></ion-icon>
+        Complete Event
+      </ion-button>
+    </div>
+    <div class="event-card">
+      <ion-button expand="full" (click)="onButtonClick('Campaign Data')" class="custom-button">
+        <ion-icon slot="start" name="analytics-outline"></ion-icon>
+        Campaign Data
+      </ion-button>
+    </div>
   </div>
 </ion-content>
