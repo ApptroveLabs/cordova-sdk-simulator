@@ -46,7 +46,7 @@ export class AppModule {
 
   // Method to initialize the Trackier SDK
   private initializeTrackierSDK() {
-    const key = "ee9f21fb-5848-4ed9-8d9c-e4093e6d220c";  // Replace with your actual SDK key
+    const key = "xxxxjxxjxjxjxjxjxkxkxkxkxxxx";  // Replace with your actual SDK key
     const trackierConfig = new TrackierConfig(key, TrackierEnvironment.Development);  // or Production as per your needs
     // trackierConfig.setAppSecret("659fb6f1xxxxxxxa29d46c9", "9258fcdb-a7a7-xxxxx-xxxx-65835ed38407"); // Pass secretId and secretKey
     trackierConfig.setAndroidId("User Android Id 1234567890"); // Only for andorid device
