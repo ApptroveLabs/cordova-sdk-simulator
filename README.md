@@ -180,7 +180,7 @@ async submitEvent() {
 - User-friendly dropdown interface
 - Real-time validation and feedback
 
-<img src="src/assets/screenshots/buildinevent.png" width="400" height="300" alt="Built-in Events Interface">
+<img src="src/assets/screenshots/buildinevent.png" width="400" height="500" alt="Built-in Events Interface">
 
 *Built-in Events Interface - Track predefined events with revenue and parameters*
 
@@ -233,7 +233,7 @@ async submitEvent() {
 - Dynamic parameter system
 - Input validation and error handling
 
-<img src="src/assets/screenshots/customevent.png" width="400" height="300" alt="Custom Events Interface">
+<img src="src/assets/screenshots/customevent.png" width="400" height="500" alt="Custom Events Interface">
 
 *Custom Events Interface - Track custom events with flexible configuration*
 
@@ -284,7 +284,7 @@ private setupDeferredDeeplinkCallback() {
 
 Visual deep link testing interface:
 
-<img src="src/assets/screenshots/deeplinkpage.png" width="400" height="300" alt="Deep Link Testing Interface">
+<img src="src/assets/screenshots/deeplinkpage.png" width="400" height="500" alt="Deep Link Testing Interface">
 
 *Deep Link Testing Interface - Test and process deep links*
 
@@ -419,11 +419,11 @@ async createDynamicLink() {
 - Error handling and user feedback
 - Clipboard integration for easy sharing
 
-<img src="src/assets/screenshots/deeplinkresolver.png" width="400" height="300" alt="Deep Link Resolver">
+<img src="src/assets/screenshots/deeplinkresolver.png" width="400" height="500" alt="Deep Link Resolver">
 
 *Deep Link Resolver - Resolve and analyze deep link data*
 
-<img src="src/assets/screenshots/deferreddeeplinkcallback.png" width="400" height="300" alt="Deferred Deep Link Callback">
+<img src="src/assets/screenshots/deferreddeeplinkcallback.png" width="400" height="500" alt="Deferred Deep Link Callback">
 
 *Deferred Deep Link Callback - Handle deferred deep links*
 
@@ -608,7 +608,7 @@ async retrieveCampaignData() {
 - Error handling and fallbacks
 - iOS compatibility support
 
-<img src="src/assets/screenshots/campaingndevice.png" width="400" height="300" alt="Campaign and Device Data">
+<img src="src/assets/screenshots/campaingndevice.png" width="400" height="500" alt="Campaign and Device Data">
 
 *Campaign and Device Data - View campaign parameters and device information*
 
@@ -627,7 +627,7 @@ async retrieveCampaignData() {
 - **Product Page**: `src/app/product-page/product-page.page.ts` - Product display
 - **Add to Cart**: `src/app/add-to-cart-screen/add-to-cart-screen.page.ts` - Purchase tracking
 
-<img src="src/assets/screenshots/productpage.png" width="400" height="300" alt="Product Page">
+<img src="src/assets/screenshots/productpage.png" width="400" height="500" alt="Product Page">
 
 *Product Page - Product display and purchase tracking*
 
@@ -751,7 +751,7 @@ LOG  Firebase Analytics: Set user property ct_objectId = trackier_id_12345
 - **Apple Ads Token** - Advertising ID integration
 - **Firebase Analytics** - Uninstall tracking integration
 
-<img src="src/assets/screenshots/Simulator%20Screenshot%20-%20Iphone%20-%202025-09-10%20at%2011.22.29.png" width="400" height="300" alt="iPhone Simulator">
+<img src="src/assets/screenshots/Simulator%20Screenshot%20-%20Iphone%20-%202025-09-10%20at%2011.22.29.png" width="400" height="500" alt="iPhone Simulator">
 
 *iPhone Simulator - iOS app running on simulator*
 
