@@ -20,11 +20,11 @@ export class FirebaseAnalyticsService {
         await window.FirebaseAnalytics.setUserProperty({ name, value });
         console.log(`Firebase Analytics: Set user property ${name} = ${value}`);
       } else {
-        console.warn('Firebase Analytics not available');
+        console.warn('Firebase Analytics not available - plugin disabled or not configured');
       }
     } catch (error) {
       console.error('Error setting Firebase user property:', error);
-      throw error;
+      // Don't throw - allow app to continue without Firebase
     }
   }
 }

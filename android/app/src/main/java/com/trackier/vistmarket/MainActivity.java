@@ -35,7 +35,7 @@
 //}
 //
 //
-package io.ionic.starter;
+package com.trackier.vistmarket;
 
 import android.content.Intent;
 import android.os.Bundle;

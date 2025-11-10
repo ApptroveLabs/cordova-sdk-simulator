@@ -9,7 +9,7 @@ export interface Environment {
 
 export const environment: Environment = {
   production: false,
-  trackierSdkKey: 'ee9f21fb-5848-4ed9-8d9c-e4093e6d220c', // Your development SDK key
+  trackierSdkKey: 'e0884ad1-000f-4f61-8dd3-b2b4d7c1ac5b', // Your development SDK key
 };
 
 

@@ -7,7 +7,7 @@ import { Location } from '@angular/common';
 import {
   TrackierCordovaPlugin,
   TrackierEvent,
-} from '@awesome-cordova-plugins/trackier/ngx';
+} from 'com.trackier.cordova_sdk/ionic-native/trackier/ngx';
 import { AlertController } from '@ionic/angular';
 
 @Component({

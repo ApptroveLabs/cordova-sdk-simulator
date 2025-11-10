@@ -5,7 +5,7 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 
 const config: CapacitorConfig = {
-  appId: 'io.ionic.starter',
+  appId: 'com.trackier.vistmarket',
   appName: 'Ionic_Simulator',
   webDir: 'www',
   plugins: {

@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AlertController, ToastController, IonicModule } from '@ionic/angular';
-import { TrackierCordovaPlugin, TrackierEvent } from '@awesome-cordova-plugins/trackier/ngx';
+import { TrackierCordovaPlugin, TrackierEvent } from 'com.trackier.cordova_sdk/ionic-native/trackier/ngx';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';

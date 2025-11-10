@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { TrackierCordovaPlugin, TrackierEvent } from '@awesome-cordova-plugins/trackier/ngx';
+import { TrackierCordovaPlugin, TrackierEvent } from 'com.trackier.cordova_sdk/ionic-native/trackier/ngx';
 
 @Component({
   selector: 'app-complete-event',

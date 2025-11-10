@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule  } from '@angular/common'; // Import CommonModule
 import { IonicModule ,ToastController} from '@ionic/angular'; // Import IonicModule
-import { TrackierCordovaPlugin, TrackierConfig, TrackierEnvironment, TrackierEvent } from '@awesome-cordova-plugins/trackier/ngx';
+import { TrackierCordovaPlugin, TrackierConfig, TrackierEnvironment, TrackierEvent } from 'com.trackier.cordova_sdk/ionic-native/trackier/ngx';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common'; // Import Location
 

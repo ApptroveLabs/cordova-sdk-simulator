@@ -7,7 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { CompleteEventPageRoutingModule } from './complete-event-routing.module';
 
 import { CompleteEventPage } from './complete-event.page';
-import { TrackierCordovaPlugin } from '@awesome-cordova-plugins/trackier/ngx';
+import { TrackierCordovaPlugin } from 'com.trackier.cordova_sdk/ionic-native/trackier/ngx';
 
 @NgModule({
   imports: [
