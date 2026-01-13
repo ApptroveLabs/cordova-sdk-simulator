@@ -93,7 +93,7 @@ export class AppComponent {
 
   private initializeTrackierSDK() {
     const key = environment.trackierSdkKey; // Use key from environment file
-    const trackierConfig = new TrackierConfig("e0884ad1-000f-4f61-8dd3-b2b4d7c1ac5b", TrackierEnvironment.Development);
+    const trackierConfig = new TrackierConfig("XXXXXXXXXXXXXXXXXXXX", TrackierEnvironment.Development);
 
     // Android-specific configuration for encrypt your logs and header request 
     if (this.platform.is('android')) {
