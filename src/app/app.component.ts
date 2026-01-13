@@ -9,6 +9,7 @@ import { environment } from '../environments/environment';
 import { AdvertisingId } from '@capacitor-community/advertising-id';
 import { DeferredDeeplinkService } from './services/deferred-deeplink.service';
 import { FcmService } from './services/fcm.service';
+import { ApnService } from './services/apn.service';
 
 const { App } = Plugins;
 
@@ -45,7 +46,8 @@ export class AppComponent {
     private platform: Platform,
     private deeplinks: Deeplinks,
     private deferredDeeplinkService: DeferredDeeplinkService,
-    private fcmService: FcmService
+    private fcmService: FcmService,
+    private apnService: ApnService
   ) {
     this.platform.ready().then(() => {
       this.initializeApp();
@@ -91,7 +93,7 @@ export class AppComponent {
 
   private initializeTrackierSDK() {
     const key = environment.trackierSdkKey; // Use key from environment file
-    const trackierConfig = new TrackierConfig("XXXXXXXXXXXXX", TrackierEnvironment.Development);
+    const trackierConfig = new TrackierConfig("e0884ad1-000f-4f61-8dd3-b2b4d7c1ac5b", TrackierEnvironment.Development);
 
     // Android-specific configuration for encrypt your logs and header request 
     if (this.platform.is('android')) {
@@ -118,6 +120,12 @@ export class AppComponent {
         // Only sends token when it changes 
         if (this.platform.is('android')) {
           this.fcmService.initializeFCM();
+        }
+
+        // iOS: Initialize APN and handle token refresh for uninstall tracking
+        // Only sends token when it changes (similar to FCM on Android)
+        if (this.platform.is('ios')) {
+          this.apnService.initializeAPN();
         }
 
         // iOS: Subscribe to attribution
