@@ -1,57 +1,108 @@
-<ion-header>
+<ion-header class="ion-no-border">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button auto-hide="false"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      <span class="brand-name">Cordmarket</span>
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="goToCake()">
+        <ion-icon name="pizza-outline"></ion-icon>
+      </ion-button>
+      <ion-button (click)="goToWishlist()">
+        <ion-icon name="heart-outline"></ion-icon>
+      </ion-button>
+      <ion-button (click)="goToCart()">
+        <ion-icon name="cart-outline"></ion-icon>
+        <ion-badge color="danger" class="cart-badge" *ngIf="cartCount > 0">{{ cartCount }}</ion-badge>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
 </ion-header>
 
-<ion-content class="content-container">
-  <!-- Trackier Logo (Image) -->
-  <ion-img src="assets/trackierlogo.png" class="logo"></ion-img>
+<ion-content>
+  <!-- Search Bar Section -->
+  <div class="search-header">
+    <div class="search-inner ion-padding-horizontal">
+      <ion-searchbar 
+        [(ngModel)]="searchQuery" 
+        (ionInput)="filterProducts()" 
+        placeholder="Search products..."
+        class="custom-searchbar"
+        mode="md">
+      </ion-searchbar>
+    </div>
+  </div>
 
-  <ion-text class="welcome-text">
-    <h2>Welcome to UniLink Simulator</h2>
-    <p class="subheading">Track and manage your events with ease.</p>
-  </ion-text>
+  <div class="main-body">
+    <!-- Banners (PageView equivalent) -->
+    <div class="banners-section" *ngIf="!searchQuery">
+      <div class="banner-scroll-container">
+        <div class="banner-card" *ngFor="let banner of banners; let i = index" [style.backgroundImage]="'url(' + banner.image + ')'">
+          <div class="banner-overlay">
+            <h3>{{ banner.title }}</h3>
+          </div>
+        </div>
+      </div>
+    </div>
 
-  <div class="button-container">
-    <div class="event-card">
-      <ion-button expand="full" (click)="onButtonClick('Built-in events')" class="custom-button">
-        <ion-icon slot="start" name="list-circle-outline"></ion-icon>
-        Built-in events
-      </ion-button>
+    <!-- Categories Section -->
+    <div class="section-container">
+      <h3 class="section-title ion-padding-horizontal">Shop by Category</h3>
+      <div class="category-scroll-container">
+        <div 
+          class="category-chip" 
+          *ngFor="let cat of categories" 
+          [class.active]="selectedCategory === cat"
+          (click)="onCategoryChange(cat)">
+          {{ cat }}
+        </div>
+      </div>
     </div>
-    <div class="event-card">
-      <ion-button expand="full" (click)="onButtonClick('Customs Events')" class="custom-button">
-        <ion-icon slot="start" name="create-outline"></ion-icon>
-        Customs Events
-      </ion-button>
-    </div>
-    <div class="event-card">
-      <ion-button expand="full" (click)="onButtonClick('Deep linking Page')" class="custom-button">
-        <ion-icon slot="start" name="link-outline"></ion-icon>
-        Deep linking Page
-      </ion-button>
-    </div>
-    <div class="event-card">
-      <ion-button expand="full" (click)="onButtonClick('Product Page')" class="custom-button">
-        <ion-icon slot="start" name="pricetag-outline"></ion-icon>
-        Product Page
-      </ion-button>
-    </div>
-    <div class="event-card">
-      <ion-button expand="full" (click)="onButtonClick('Dynamic Links')" class="custom-button">
-        <ion-icon slot="start" name="link-outline"></ion-icon>
-        Dynamic Links
-      </ion-button>
-    </div>
-    <div class="event-card">
-      <ion-button expand="full" (click)="onButtonClick('Complete Event')" class="custom-button" id="complete-event-btn">
-        <ion-icon slot="start" name="checkmark-circle-outline"></ion-icon>
-        Complete Event
-      </ion-button>
-    </div>
-    <div class="event-card">
-      <ion-button expand="full" (click)="onButtonClick('Campaign Data')" class="custom-button">
-        <ion-icon slot="start" name="analytics-outline"></ion-icon>
-        Campaign Data
-      </ion-button>
+
+    <!-- Trending Products -->
+    <div class="section-container ion-padding-horizontal">
+      <div class="section-header">
+        <h3 class="section-title">Trending Products</h3>
+      </div>
+      
+      <ion-grid fixed class="ion-no-padding">
+        <ion-row>
+          <ion-col size="6" size-md="4" size-lg="3" *ngFor="let product of displayedProducts">
+            <div class="product-card" (click)="viewProduct(product)">
+              <div class="image-container">
+                <img [src]="product.imageUrl" />
+                <div class="top-actions">
+                  <div class="icon-circle wishlist" (click)="$event.stopPropagation(); toggleWishlist(product)">
+                    <ion-icon name="heart-outline"></ion-icon>
+                  </div>
+                  <div class="icon-circle share" (click)="shareProduct(product, $event)">
+                    <ion-icon name="share-social-outline"></ion-icon>
+                  </div>
+                </div>
+              </div>
+              <div class="info-container">
+                <div class="top-info">
+                  <span class="category">{{ product.category }}</span>
+                  <h4 class="name">{{ product.name }}</h4>
+                </div>
+                <div class="bottom-info">
+                  <span class="price">${{ product.price }}</span>
+                  <div class="add-btn" (click)="addToCart(product, $event)">
+                    <ion-icon name="cart-outline"></ion-icon>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+      
+      <div class="empty-state" *ngIf="displayedProducts.length === 0">
+        <ion-icon name="search-outline"></ion-icon>
+        <p>No products found matches your search.</p>
+      </div>
     </div>
   </div>
 </ion-content>

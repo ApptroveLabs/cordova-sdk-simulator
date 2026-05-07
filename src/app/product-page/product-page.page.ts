@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common'; // Import CommonModule
 import { IonicModule,ToastController } from '@ionic/angular'; // Import IonicModule
-import { TrackierCordovaPlugin, TrackierConfig, TrackierEnvironment, TrackierEvent } from 'com.trackier.cordova_sdk/ionic-native/trackier/ngx';
+import { AppTroveCordovaPlugin, AppTroveEvent } from 'com.apptrove.cordova_sdk/ionic-native/apptrove/ngx';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common'; // Import Location
 
@@ -16,7 +16,7 @@ import { Location } from '@angular/common'; // Import Location
 })
 export class ProductPagePage implements OnInit {
 
-  constructor(private trackierCordovaPlugin:TrackierCordovaPlugin,private router: Router,private location: Location, private toastController: ToastController) {}
+  constructor(private apptroveCordovaPlugin:AppTroveCordovaPlugin,private router: Router,private location: Location, private toastController: ToastController) {}
 
 
   ngOnInit() {
@@ -25,17 +25,17 @@ export class ProductPagePage implements OnInit {
 
 
   async addToCart() {
-    const trackierEvent = new TrackierEvent('Fy4uC1_FlN');
-    trackierEvent.setParam1('Ionic Product Added to cart');
-    trackierEvent.setParam2('Param 2');
-    trackierEvent.setParam3('Param 3');
-    trackierEvent.setParam4('Param 4');
-    trackierEvent.setCouponCode('*SDJ(#JKKSH');
-    this.trackierCordovaPlugin.setUserId('Satya7893@');
-    this.trackierCordovaPlugin.setUserName('SatyamKr');
-    this.trackierCordovaPlugin.setUserPhone('3i23u4ueuwruew');
-    this.trackierCordovaPlugin.setUserEmail('Satyam@Trackier.com');
-    this.trackierCordovaPlugin.trackEvent(trackierEvent);
+    const apptroveEvent = new AppTroveEvent('Fy4uC1_FlN');
+    apptroveEvent.setParam1('Ionic Product Added to cart');
+    apptroveEvent.setParam2('Param 2');
+    apptroveEvent.setParam3('Param 3');
+    apptroveEvent.setParam4('Param 4');
+    apptroveEvent.setCouponCode('*SDJ(#JKKSH');
+    this.apptroveCordovaPlugin.setUserId('Satya7893@');
+    this.apptroveCordovaPlugin.setUserName('SatyamKr');
+    this.apptroveCordovaPlugin.setUserPhone('3i23u4ueuwruew');
+    this.apptroveCordovaPlugin.setUserEmail('Satyam@AppTrove.com');
+    this.apptroveCordovaPlugin.trackEvent(apptroveEvent);
 
     // Show a toast message instead of alert
     const toast = await this.toastController.create({

@@ -34,11 +34,11 @@ export class CakeScreenPage {
   getProductImage() {
     switch (this.productId) {
       case 'blueberry':
-        return 'assets/blueberrycupcake.png';
+        return 'assets/blueberrycupcake.jpeg';
       case 'chocochip':
         return 'assets/chocochipcupcake.png';
       case 'vanilla':
-        return 'assets/vanillaccupake.png';
+        return 'assets/vanillaccupake.jpeg';
       default:
         return 'assets/chocochipcupcake.png';
     }

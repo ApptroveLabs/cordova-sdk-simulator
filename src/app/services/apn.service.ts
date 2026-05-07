@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { PushNotifications, Token } from '@capacitor/push-notifications';
-import { TrackierCordovaPlugin } from 'com.trackier.cordova_sdk/ionic-native/trackier/ngx';
+import { AppTroveCordovaPlugin } from 'com.apptrove.cordova_sdk/ionic-native/apptrove/ngx';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +11,7 @@ export class ApnService {
 
   constructor(
     private platform: Platform,
-    private trackierCordovaPlugin: TrackierCordovaPlugin
+    private apptroveCordovaPlugin: AppTroveCordovaPlugin
   ) {}
 
   /**
@@ -56,16 +56,16 @@ export class ApnService {
   }
 
   /**
-   * Handle token refresh - always send to Trackier for uninstall tracking
-   * This sends the APN device token to Trackier for iOS uninstall tracking
+   * Handle token refresh - always send to AppTrove for uninstall tracking
+   * This sends the APN device token to AppTrove for iOS uninstall tracking
    */
   private handleTokenRefresh(newToken: string): void {
     try {
-      console.log('APN Token received, sending to Trackier:', newToken);
+      console.log('APN Token received, sending to AppTrove:', newToken);
       
-      // Always send the APN token to Trackier SDK
-      this.trackierCordovaPlugin.sendAPNToken(newToken);
-      console.log('APN Token sent to Trackier SDK successfully');
+      // Always send the APN token to AppTrove SDK
+      this.apptroveCordovaPlugin.sendAPNToken(newToken);
+      console.log('APN Token sent to AppTrove SDK successfully');
 
       // Store the token
       localStorage.setItem(this.APN_TOKEN_KEY, newToken);

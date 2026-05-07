@@ -1,34 +1,18 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
-import { TrackierCordovaPlugin, TrackierConfig, TrackierEnvironment, TrackierEncryptionType } from 'com.trackier.cordova_sdk/ionic-native/trackier/ngx';
-import { Platform } from '@ionic/angular';
-import { Deeplinks } from '@ionic-native/deeplinks/ngx';
-import { Plugins } from '@capacitor/core';
+import { AppTroveCordovaPlugin, AppTroveConfig, AppTroveEnvironment, AppTroveEvent, AppTroveDeepLink } from 'com.apptrove.cordova_sdk/ionic-native/apptrove/ngx';
+import { Platform, AlertController, MenuController, ToastController } from '@ionic/angular';
+import { StatusBar, Style } from '@capacitor/status-bar';
 import { environment } from '../environments/environment';
 import { AdvertisingId } from '@capacitor-community/advertising-id';
 import { DeferredDeeplinkService } from './services/deferred-deeplink.service';
 import { FcmService } from './services/fcm.service';
 import { ApnService } from './services/apn.service';
-
-const { App } = Plugins;
-
-interface AppUrlOpenData {
-  url: string;
-}
-
-interface DeepLinkData {
-  productId: string;
-  quantity: number;
-  actionData?: any;
-  dlv?: string;
-}
-
-interface DeepLinkMatchData {
-  productId: string;
-  quantity: string; // URL parameters are strings
-  [key: string]: any; // Allow additional properties
-}
+import { EcommerceService } from './services/ecommerce.service';
+import { AppTroveEvents } from './utils/apptrove-events';
+import { DeepLinkingService } from './deep-linking/deep-linking-service';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -37,17 +21,22 @@ interface DeepLinkMatchData {
 })
 export class AppComponent {
   isSplashVisible: boolean = true;
-  isDeepLinkOpen: boolean = false; // Track if the app is opened via deep link
+  isDeepLinkOpen: boolean = false;
+  userEmail: string | null = null;
 
   constructor(
     private splashScreen: SplashScreen,
-    private trackierCordovaPlugin: TrackierCordovaPlugin,
+    private apptroveCordovaPlugin: AppTroveCordovaPlugin,
     private router: Router,
     private platform: Platform,
-    private deeplinks: Deeplinks,
     private deferredDeeplinkService: DeferredDeeplinkService,
     private fcmService: FcmService,
-    private apnService: ApnService
+    private apnService: ApnService,
+    private alertController: AlertController,
+    private menuController: MenuController,
+    private ecommerceService: EcommerceService,
+    private toastController: ToastController,
+    private deepLinkingService: DeepLinkingService
   ) {
     this.platform.ready().then(() => {
       this.initializeApp();
@@ -55,200 +44,310 @@ export class AppComponent {
   }
 
   private initializeApp() {
-    // Initialize Trackier SDK first
-    this.initializeTrackierSDK();
-    
-    // Initialize deep links
-    this.initializeDeepLinks();
-    
-    // Listen for deep links
-    App['addListener']('appUrlOpen', (data: AppUrlOpenData) => {
-      console.log('App URL Opened:', data);
-      this.isDeepLinkOpen = true; // Mark as deep link opened
-      this.handleDeepLinkFromUrl(data.url);
+    this.configureStatusBar();
+    this.setupDeferredDeeplinkCallback();
+    this.subscribeToNativeDeepLinks();
+    this.initializeAppTroveSDK();
+
+    this.ecommerceService.userEmail$.subscribe(email => {
+      this.userEmail = email;
     });
+  }
+
+  private subscribeToNativeDeepLinks() {
+    this.deepLinkingService.listenForDeepLinks().subscribe((url: string) => {
+      if (!url) {
+        return;
+      }
+
+      this.isDeepLinkOpen = true;
+      this.handleDeepLinkFromUrl(url);
+    });
+  }
+
+  private async configureStatusBar() {
+    try {
+      if (!this.platform.is('hybrid')) {
+        return;
+      }
+
+      await StatusBar.setOverlaysWebView({ overlay: false });
+      await StatusBar.setStyle({ style: Style.Light });
+      await StatusBar.setBackgroundColor({ color: '#0f172a' });
+    } catch (error) {
+      console.warn('Unable to configure status bar:', error);
+    }
   }
 
   private handleDeepLinkFromUrl(url: string) {
     try {
       const urlParams = new URL(url);
+      const pathname = urlParams.pathname || '';
       const productId = urlParams.searchParams.get('product_id') || '';
-      const quantity = parseInt(urlParams.searchParams.get('quantity') || '0', 10);
+      const quantity = urlParams.searchParams.get('quantity') || '';
 
-      if (productId && quantity > 0) {
-        // Skip splash screen and navigate directly to the 'cake-screen'
+      if (pathname.startsWith('/product/') || productId) {
+        const routeProductId = pathname.startsWith('/product/') ? pathname.split('/').pop() || productId : productId;
+        if (quantity) {
+          this.router.navigate(['/cake-screen'], {
+            queryParams: {
+              productId: routeProductId,
+              quantity,
+              actionData: urlParams.searchParams.get('actionData'),
+              dlv: urlParams.searchParams.get('dlv'),
+              deeplink: '1',
+            },
+          });
+        } else if (routeProductId) {
+          this.router.navigate(['/product-detail', routeProductId], {
+            queryParams: { deeplink: '1' },
+          });
+        }
+        this.isSplashVisible = false;
+      } else if (pathname.startsWith('/cake/')) {
+        const cakeParts = pathname.split('/').filter(Boolean);
+        const cakeId = cakeParts[1] || productId;
+        const cakeQty = cakeParts[2] || quantity || '1';
         this.router.navigate(['/cake-screen'], {
-          queryParams: { productId, quantity },
+          queryParams: {
+            productId: cakeId,
+            quantity: cakeQty,
+            actionData: urlParams.searchParams.get('actionData'),
+            dlv: urlParams.searchParams.get('dlv'),
+            deeplink: '1',
+          },
         });
-        this.isSplashVisible = false;  // Hide splash screen immediately
+        this.isSplashVisible = false;
+      } else if (pathname === '/d') {
+        if (quantity) {
+          this.router.navigate(['/cake-screen'], {
+            queryParams: {
+              productId,
+              quantity,
+              actionData: urlParams.searchParams.get('actionData'),
+              dlv: urlParams.searchParams.get('dlv'),
+              deeplink: '1',
+            },
+          });
+        } else if (productId) {
+          this.router.navigate(['/product-detail', productId], {
+            queryParams: { deeplink: '1' },
+          });
+        } else {
+          this.checkInitialRoute();
+        }
+        this.isSplashVisible = false;
       } else {
-        // If no valid product/quantity found, navigate to home screen
-        this.router.navigate(['/home']);
+        this.checkInitialRoute();
       }
     } catch (error) {
       console.error('Error parsing deep link URL:', error);
-      this.router.navigate(['/home']);
+      this.checkInitialRoute();
     }
   }
 
-  private initializeTrackierSDK() {
-    const key = environment.trackierSdkKey; // Use key from environment file
-    const trackierConfig = new TrackierConfig("XXXXXXXXXXXXXXXXXXXX", TrackierEnvironment.Development);
+  private async checkInitialRoute() {
+    try {
+      const seen = await firstValueFrom(this.ecommerceService.onboardingSeen$);
+      if (!seen) {
+        this.router.navigate(['/onboarding']);
+        return;
+      }
 
-    // Android-specific configuration for encrypt your logs and header request 
-    if (this.platform.is('android')) {
-      // trackierConfig.setAppID("XXXXXXXX");
-      // trackierConfig.setEncryptionKey("xxxxxxxxxxxxxx");
-      // trackierConfig.setEncryptionType(TrackierEncryptionType.AES_GCM);
+      const email = await firstValueFrom(this.ecommerceService.userEmail$);
+      if (!email) {
+        this.router.navigate(['/login']);
+      } else {
+        this.router.navigate(['/home']);
+      }
+    } finally {
+      this.isSplashVisible = false;
+      this.splashScreen.hide();
+    }
+  }
+
+  private initializeAppTroveSDK() {
+    const sdkKey = this.platform.is('android') ? environment.androidAppTroveSdkKey : environment.iosAppTroveSdkKey;
+    const secretId = this.platform.is('android') ? environment.androidAppTroveSecretId : environment.iosAppTroveSecretId;
+    const secretKey = this.platform.is('android') ? environment.androidAppTroveSecretKey : environment.iosAppTroveSecretKey;
+
+    if (!sdkKey) {
+      console.error('CRITICAL: AppTrove SDK Key is empty.');
+      return;
     }
 
-            // iOS: Update conversion value
-            if (this.platform.is('ios')) {
-              this.trackierCordovaPlugin.updatePostbackConversion(10);
-            }
-    
+    const apptroveConfig = new AppTroveConfig(sdkKey, AppTroveEnvironment.Development);
+    apptroveConfig.setAppSecret(secretId, secretKey);
 
-    // iOS: Configure ATT timeout (should be called before initialization)
     if (this.platform.is('ios')) {
-      this.trackierCordovaPlugin.waitForATTUserAuthorization(20);
+      this.apptroveCordovaPlugin.updatePostbackConversion(10);
+      this.apptroveCordovaPlugin.waitForATTUserAuthorization(20);
     }
 
-    this.trackierCordovaPlugin.initializeSDK(trackierConfig)
+    this.apptroveCordovaPlugin.initializeSDK(apptroveConfig)
       .then(() => {
-
-        // Android: Initialize FCM and handle token refresh automatically
-        // Only sends token when it changes 
-        if (this.platform.is('android')) {
-          this.fcmService.initializeFCM();
-        }
-
-        // iOS: Initialize APN and handle token refresh for uninstall tracking
-        // Only sends token when it changes (similar to FCM on Android)
+        console.log('AppTrove SDK initialized');
+        if (this.platform.is('android')) this.fcmService.initializeFCM();
         if (this.platform.is('ios')) {
           this.apnService.initializeAPN();
-        }
-
-        // iOS: Subscribe to attribution
-        if (this.platform.is('ios')) {
-          this.trackierCordovaPlugin.subscribeAttributionlink();
-        }
-
-        // Get Apple Ads Token and send to SDK (iOS only)
-        if (this.platform.is('ios')) {
+          this.apptroveCordovaPlugin.subscribeAttributionlink();
           this.getAppleAdsToken();
         }
-
-        // Set up deferred deep link callback
-        this.setupDeferredDeeplinkCallback();
-
-        // Parse deep link for testing (optional)
-        setTimeout(() => {
-          // Pass user clicked url here for testing - add short url from Trackier panel
-          this.trackierCordovaPlugin.parseDeepLink("https://trackier58.u9ilnk.me/d/8X7iwyXsyA")
-            .then((result: any) => {
-              console.log("parseDeepLink result:", result);
-            })
-            .catch((error: any) => {
-              console.error("Error parsing deep link:", error);
-            });
-        }, 1000);
       })
-      .catch((error: any) => console.error('Error initializing Trackier SDK:', error))
+      .catch(error => console.error('Error initializing AppTrove SDK:', error))
       .finally(() => {
-        // Only show splash screen if the app is NOT opened via deep link
         if (!this.isDeepLinkOpen) {
           setTimeout(() => {
-            this.isSplashVisible = false;
-            this.splashScreen.hide();
-            this.router.navigate(['/home']); // Navigate to home screen if not a deep link
-          }, 2000); // 2 seconds delay
+            void this.checkInitialRoute();
+          }, 3000);
         }
       });
   }
 
-  private initializeDeepLinks() {
-    this.deeplinks.route({
-      '/cake/:productId/:quantity': (data: DeepLinkMatchData) => {
-        this.handleDeepLink({
-          productId: data.productId,
-          quantity: parseInt(data.quantity, 10),
-          actionData: data['actionData'], // Access with bracket notation
-          dlv: data['dlv'], // Access with bracket notation
-        });
-      },
-    }).subscribe(
-      (match) => {
-        console.log('Deep Link Matched:', match);
-      },
-      (nomatch) => {
-        console.warn('No matching deep link:', nomatch);
-        this.router.navigate(['/home']);
-      }
-    );
-  }
-
-  private handleDeepLink(data: DeepLinkData) {
-    const { productId, quantity, actionData, dlv } = data;
-
-    // Directly navigate to cake-screen with deep link parameters
-    this.router.navigate(['/cake-screen'], {
-      queryParams: { productId, quantity, actionData, dlv },
-    });
-  }
-
-  // Get Apple Ads Token and send to Trackier SDK
   private async getAppleAdsToken() {
     try {
-      // Only run on iOS
-      if (!this.platform.is('ios')) {
-        console.log("Apple Ads Token only available on iOS");
-        return;
-      }
-
-      console.log("Getting Apple Ads Token...");
-
-      // First request tracking authorization
+      if (!this.platform.is('ios')) return;
       const trackingResult = await AdvertisingId.requestTracking();
-
       if (trackingResult.value === 'Authorized') {
-        // Permission granted, get the advertising ID
         const advertisingResult = await AdvertisingId.getAdvertisingId();
         const token = advertisingResult.id;
-
-        console.log("Apple Ads Token received:", token);
-
         if (token) {
-          this.trackierCordovaPlugin.updateAppleAdsToken(token);
-          console.log("Apple Ads Token sent to Trackier SDK successfully");
-        } else {
-          console.log("No Apple Ads Token available");
+          this.apptroveCordovaPlugin.updateAppleAdsToken(token);
         }
-      } else {
-        console.log("Tracking permission denied or restricted");
       }
     } catch (error) {
       console.error("Error getting Apple Ads Token:", error);
     }
   }
 
-  // Set up deferred deep link callback
   private setupDeferredDeeplinkCallback() {
-    try {
-      console.log("Setting up deferred deep link callback...");
+    this.apptroveCordovaPlugin.setDeferredDeeplinkCallbackListener().subscribe({
+      next: (deepLink: AppTroveDeepLink) => {
+        const url = deepLink.url ?? '';
+        if (!url) {
+          return;
+        }
 
-      this.trackierCordovaPlugin.setDeferredDeeplinkCallbackListener().subscribe({
-        next: (url: string) => {
-          console.log("DEFERRED DEEP LINK RECEIVED:", url);
-          this.deferredDeeplinkService.setDeferredDeeplink(url);
-        },
-        error: (error: any) => {
-          console.error("Error in deferred deeplink callback:", error);
+        this.isDeepLinkOpen = true;
+        this.deferredDeeplinkService.setDeferredDeeplink(url);
+        this.handleDeepLinkFromUrl(url);
+      },
+      error: (error: any) => console.error("Error in deferred deeplink callback:", error)
+    });
+  }
+
+  navigate(path: string) {
+    this.router.navigate([path]);
+    this.menuController.close('main-menu');
+  }
+
+  async logout() {
+    const alert = await this.alertController.create({
+      header: 'Logout',
+      message: 'Are you sure you want to logout?',
+      buttons: [
+        { text: 'Cancel', role: 'cancel' },
+        { 
+          text: 'Logout', 
+          handler: () => {
+            const logoutEvent = new AppTroveEvent(AppTroveEvents.LOGOUT); 
+            logoutEvent.setParam1(this.userEmail || 'guest');
+            this.apptroveCordovaPlugin.trackEvent(logoutEvent);
+            this.ecommerceService.setUserEmail(null);
+            this.router.navigate(['/login']);
+            this.menuController.close('main-menu');
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+
+  async shareApp() {
+    try {
+      const dynamicLink = await this.apptroveCordovaPlugin.createDynamicLink({
+        templateId: 'wy23Px',
+        link: 'https://trackier58.u9ilnk.me/download',
+        domainUriPrefix: 'trackier58.u9ilnk.me',
+        deepLinkValue: 'Home',
+        socialMetaTagParameters: {
+          title: 'Download Cordmarket',
+          description: 'The best premium shopping app.',
         }
       });
-
-      console.log("Deferred deep link callback set up successfully");
-    } catch (error) {
-      console.error("Error setting up deferred deeplink callback:", error);
+      if (navigator.share) {
+        await navigator.share({
+          title: 'Cordmarket',
+          text: 'Check out Cordmarket! The best premium shopping app.\nDownload now: https://trackier58.u9ilnk.me/download',
+          url: dynamicLink
+        });
+      }
+    } catch (e) {
+      console.error('Error sharing app:', e);
     }
+  }
+
+  async showOrders() {
+    const toast = await this.toastController.create({
+      message: 'No past orders found.',
+      duration: 2000,
+      position: 'bottom'
+    });
+    await toast.present();
+    this.menuController.close('main-menu');
+  }
+
+  async showPolicy(title: string) {
+    const alert = await this.alertController.create({
+      header: title,
+      message: title === 'Privacy Policy' ? `
+        Privacy Policy for Cordmarket
+
+        1. Information We Collect
+        We collect data through SDKs like Apptrove, CleverTap, and WebEngage to provide personalized features and track attribution.
+
+        2. How we use your information
+        We use the information we collect to provide, operate, maintain, improve, and expand our app.
+
+        3. Data Safety
+        We ensure your data is encrypted during transmission. You can request data deletion at any time by contacting support.
+      ` : 'By using Cordmarket, you agree to comply with our e-commerce regulations.',
+      buttons: ['Understood']
+    });
+    await alert.present();
+    this.menuController.close('main-menu');
+  }
+
+  async showAbout() {
+    const alert = await this.alertController.create({
+      header: 'About Cordmarket',
+      message: 'Cordmarket is a premium e-commerce platform offering the best products directly to you with top-tier user experience.\n\nVersion: 1.0.0 (Build 98)',
+      buttons: ['Close']
+    });
+    await alert.present();
+    this.menuController.close('main-menu');
+  }
+
+  async deleteAccount() {
+    const alert = await this.alertController.create({
+      header: 'Delete Account?',
+      message: 'This action is permanent. All your order history and preferences will be permanently removed from our servers.',
+      buttons: [
+        { text: 'Cancel', role: 'cancel' },
+        {
+          text: 'Permanently Delete',
+          cssClass: 'danger',
+          handler: () => {
+            const delEvent = new AppTroveEvent(AppTroveEvents.ACCOUNT_DELETION);
+            delEvent.setParam1(this.userEmail || 'unknown');
+            this.apptroveCordovaPlugin.trackEvent(delEvent);
+            this.ecommerceService.setUserEmail(null);
+            this.router.navigate(['/login']);
+            this.menuController.close('main-menu');
+          }
+        }
+      ]
+    });
+    await alert.present();
   }
 }

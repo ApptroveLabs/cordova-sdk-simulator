@@ -7,7 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { CompleteEventPageRoutingModule } from './complete-event-routing.module';
 
 import { CompleteEventPage } from './complete-event.page';
-import { TrackierCordovaPlugin } from 'com.trackier.cordova_sdk/ionic-native/trackier/ngx';
+import { AppTroveCordovaPlugin } from 'com.apptrove.cordova_sdk/ionic-native/apptrove/ngx';
 
 @NgModule({
   imports: [
@@ -17,6 +17,6 @@ import { TrackierCordovaPlugin } from 'com.trackier.cordova_sdk/ionic-native/tra
     CompleteEventPageRoutingModule
   ],
   declarations: [CompleteEventPage],
-  providers: [TrackierCordovaPlugin]
+  providers: [AppTroveCordovaPlugin]
 })
 export class CompleteEventPageModule {}

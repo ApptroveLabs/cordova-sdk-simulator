@@ -1,10 +1,10 @@
 apply plugin: 'com.android.application'
 
 android {
-    namespace "com.trackier.vistmarket"
+    namespace "com.apptrove.cordmarket"
     compileSdk rootProject.ext.compileSdkVersion
     defaultConfig {
-        applicationId "com.trackier.vistmarket"
+        applicationId "com.apptrove.cordmarket"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

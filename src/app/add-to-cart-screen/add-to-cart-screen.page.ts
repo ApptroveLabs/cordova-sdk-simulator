@@ -1,57 +1,122 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule  } from '@angular/common'; // Import CommonModule
-import { IonicModule ,ToastController} from '@ionic/angular'; // Import IonicModule
-import { TrackierCordovaPlugin, TrackierConfig, TrackierEnvironment, TrackierEvent } from 'com.trackier.cordova_sdk/ionic-native/trackier/ngx';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { IonicModule, ToastController, AlertController } from '@ionic/angular';
+import { AppTroveCordovaPlugin, AppTroveEvent } from 'com.apptrove.cordova_sdk/ionic-native/apptrove/ngx';
 import { Router } from '@angular/router';
-import { Location } from '@angular/common'; // Import Location
+import { Location } from '@angular/common';
+import { EcommerceService, Product } from '../services/ecommerce.service';
+import { Subscription } from 'rxjs';
+import { AppTroveEvents } from '../utils/apptrove-events';
 
+interface CartLineItem {
+  product: Product;
+  quantity: number;
+}
 
 @Component({
   selector: 'app-add-to-cart-screen',
   templateUrl: './add-to-cart-screen.page.html',
-  standalone:true,
+  standalone: true,
   styleUrls: ['./add-to-cart-screen.page.scss'],
-  imports: [CommonModule, IonicModule], // Import necessary modulesa
+  imports: [CommonModule, IonicModule],
 })
-export class AddToCartScreenPage implements OnInit {
+export class AddToCartScreenPage implements OnInit, OnDestroy {
+  cartItems: CartLineItem[] = [];
+  totalItems: number = 0;
+  totalPrice: number = 0;
+  private cartSub: Subscription | undefined;
 
-  constructor(private trackierCordovaPlugin:TrackierCordovaPlugin,private router: Router,private location: Location, private toastController: ToastController) {}
+  constructor(
+    private apptrove: AppTroveCordovaPlugin,
+    private router: Router,
+    private location: Location,
+    private toastController: ToastController,
+    private ecommerceService: EcommerceService,
+    private alertController: AlertController
+  ) {}
 
   ngOnInit() {
-    var trackierEvent = new TrackierEvent("jKw8qPF50u");
-    trackierEvent.setParam1("Ionic Product Viewed");
-    this.trackierCordovaPlugin.trackEvent(trackierEvent);
+    this.cartSub = this.ecommerceService.cart$.subscribe(items => {
+      const grouped = new Map<number, CartLineItem>();
+      for (const item of items) {
+        const existing = grouped.get(item.id);
+        if (existing) {
+          existing.quantity += 1;
+        } else {
+          grouped.set(item.id, { product: item, quantity: 1 });
+        }
+      }
+      this.cartItems = Array.from(grouped.values());
+      this.totalItems = items.length;
+      this.totalPrice = this.ecommerceService.getTotalPrice();
+    });
+
+    // Track Cart Viewed
+    const cartViewEvent = new AppTroveEvent(AppTroveEvents.VIEW_CART);
+    cartViewEvent.setParam1("Cart Page Viewed");
+    this.apptrove.trackEvent(cartViewEvent);
+  }
+
+  ngOnDestroy() {
+    if (this.cartSub) this.cartSub.unsubscribe();
+  }
+
+  removeItem(product: Product) {
+    this.ecommerceService.removeFromCart(product.id);
   }
 
   async purchase() {
-    const trackierEvent = new TrackierEvent('Q4YsqBKnzZ');
-    trackierEvent.setParam1('Ionic Product Added to cart');
-    trackierEvent.setParam2('Param 2');
-    trackierEvent.setParam3('Param 3');
-    trackierEvent.setParam4('Param 4');
-    trackierEvent.setCouponCode('*SDJ(#JKKSH');
-    this.trackierCordovaPlugin.setUserId('Satya7893@');
-    this.trackierCordovaPlugin.setUserName('SatyamKr');
-    this.trackierCordovaPlugin.setUserPhone('3i23u4ueuwruew');
-    this.trackierCordovaPlugin.setUserEmail('Satyam@Trackier.com');
-    this.trackierCordovaPlugin.trackEvent(trackierEvent);
+    if (this.cartItems.length === 0) {
+      this.showToast('Your cart is empty', 'warning');
+      return;
+    }
 
-    // Show a toast message instead of alert
+    const alert = await this.alertController.create({
+      header: 'Confirm Purchase',
+      message: `Total amount: $${this.totalPrice.toFixed(2)}`,
+      buttons: [
+        { text: 'Cancel', role: 'cancel' },
+        {
+          text: 'Buy Now',
+          handler: () => {
+            this.completePurchase();
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+
+  private async completePurchase() {
+    // Track Purchase Event
+    const purchaseEvent = new AppTroveEvent(AppTroveEvents.PURCHASE); 
+    purchaseEvent.setRevenue(this.totalPrice);
+    purchaseEvent.setCurrency("USD");
+    purchaseEvent.setParam1("Order Completed");
+    this.apptrove.trackEvent(purchaseEvent);
+
+    this.ecommerceService.clearCart();
+    
     const toast = await this.toastController.create({
-      message: 'Product Purchase Sucessfully',
-      duration: 2000, // Duration in ms
-      position: 'bottom', // Position of the toast
-      color: 'success', // Success color
+      message: 'Purchase Successful!',
+      duration: 2000,
+      color: 'success',
     });
     await toast.present();
 
-    // Navigate to Add to Cart screen
-    this.router.navigate(['/add-to-cart-screen']);
+    this.router.navigate(['/home']);
   }
 
-  // Function to navigate back to the previous page
+  private async showToast(message: string, color: string = 'success') {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 2000,
+      color: color
+    });
+    await toast.present();
+  }
+
   navigateBack() {
-    this.location.back();  // Use location.back() to navigate back
+    this.location.back();
   }
-
 }

@@ -4,7 +4,7 @@ import { RouteReuseStrategy } from '@angular/router';
 
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 
-import { TrackierCordovaPlugin } from 'com.trackier.cordova_sdk/ionic-native/trackier/ngx';
+import { AppTroveCordovaPlugin } from 'com.apptrove.cordova_sdk/ionic-native/apptrove/ngx';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -19,7 +19,7 @@ import { Deeplinks } from '@ionic-native/deeplinks/ngx';
     AppRoutingModule,
   ],
   providers: [
-    TrackierCordovaPlugin,
+    AppTroveCordovaPlugin,
     SplashScreen,
     Deeplinks,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }

@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { Platform } from '@ionic/angular';
-import { DeepLinkingService } from './deep-linking-service'; // Ensure this service is correctly implemented
+import { DeepLinkingService } from './deep-linking-service';
 import { IonicModule } from '@ionic/angular';
-import { Location } from '@angular/common'; // Import Location
+import { Location } from '@angular/common';
 
 @Component({
   standalone: true, // Mark the component as standalone
@@ -22,7 +21,6 @@ export class DeepLinkingPage implements OnInit {
   isLinkAvailable: boolean = false;
 
   constructor(
-    private router: Router,
     private deepLinkingService: DeepLinkingService,
     private platform: Platform,
     private location: Location
@@ -55,14 +53,8 @@ export class DeepLinkingPage implements OnInit {
       const url = new URL(link); // Parse the deep link URL
       const productId = url.searchParams.get('product_id');
       const quantity = url.searchParams.get('quantity');
-      const actionData = url.searchParams.get('actionData');
-      const dlv = url.searchParams.get('dlv');
 
-      if (url.pathname === '/d' && productId && quantity) {
-        this.router.navigate(['/cake'], {
-          queryParams: { productId, quantity, actionData, dlv },
-        });
-      } else {
+      if (url.pathname !== '/d' || (!productId && !quantity)) {
         console.warn('Unhandled deep link:', link);
         this.linkMessage = 'Link does not match expected format.';
         this.isLinkAvailable = false;

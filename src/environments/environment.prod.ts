@@ -1,4 +1,19 @@
-export const environment = {
+export interface Environment {
+  production: boolean;
+  androidAppTroveSdkKey: string;
+  androidAppTroveSecretId: string;
+  androidAppTroveSecretKey: string;
+  iosAppTroveSdkKey: string;
+  iosAppTroveSecretId: string;
+  iosAppTroveSecretKey: string;
+}
+
+export const environment: Environment = {
   production: true,
-  trackierSdkKey: 'ee9f21fb-5848-4ed9-8d9c-e4093e6d220c', // Your actual SDK key for production
+  androidAppTroveSdkKey: '',
+  androidAppTroveSecretId: '',
+  androidAppTroveSecretKey: '',
+  iosAppTroveSdkKey: '',
+  iosAppTroveSecretId: '',
+  iosAppTroveSecretKey: '',
 };

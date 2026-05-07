@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AlertController, ToastController, IonicModule } from '@ionic/angular';
-import { TrackierCordovaPlugin, TrackierEvent } from 'com.trackier.cordova_sdk/ionic-native/trackier/ngx';
+import { AppTroveCordovaPlugin, AppTroveEvent } from 'com.apptrove.cordova_sdk/ionic-native/apptrove/ngx';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
@@ -23,7 +23,7 @@ export class DynamicLinkPage implements OnInit, OnDestroy {
   private deferredDeeplinkSubscription?: Subscription;
 
   constructor(
-    private trackier: TrackierCordovaPlugin,
+    private apptrove: AppTroveCordovaPlugin,
     private alertController: AlertController,
     private toastController: ToastController,
     private deferredDeeplinkService: DeferredDeeplinkService
@@ -38,8 +38,8 @@ export class DynamicLinkPage implements OnInit, OnDestroy {
   async initializePlugin() {
     try {
       // Check if plugin is available
-      if (!this.trackier) {
-        await this.showToast('Trackier plugin not available');
+      if (!this.apptrove) {
+        await this.showToast('AppTrove plugin not available');
         return;
       }
       await this.showToast('Dynamic Link features ready!');
@@ -55,18 +55,18 @@ export class DynamicLinkPage implements OnInit, OnDestroy {
       this.createdDynamicLink = '';
       
       // Check if plugin is available before calling
-      if (!this.trackier) {
+      if (!this.apptrove) {
         this.createdDynamicLink = 'Plugin not installed - Cannot create dynamic link';
-        await this.showToast('Trackier plugin not available');
+        await this.showToast('AppTrove plugin not available');
         return;
       }
       
       // Hardcoded configuration for dynamic link creation
       const dynamicLinkConfig = {
-        templateId: 'M5Osa2',
-        link: 'https://testdeeplink',
-        domainUriPrefix: 'https://trackier59.u9ilnk.me',
-        deepLinkValue: 'MyMainactivity',
+        templateId: 'wy23Px',
+        link: 'https://trackier58.u9ilnk.me',
+        domainUriPrefix: 'trackier58.u9ilnk.me',
+        deepLinkValue: 'CakeActivity',
         androidParameters: {
           redirectLink: 'https://play.google.com/store/apps/details?id=com.yourapp'
         },
@@ -77,19 +77,18 @@ export class DynamicLinkPage implements OnInit, OnDestroy {
           redirectLink: 'https://yourapp.com'
         },
         sdkParameters: {
-          utm_source: 'demo',
-          utm_medium: 'app',
-          utm_campaign: 'dynamic_link_test'
+          product_id: 'chocochip',
+          quantity: '2',
         },
         socialMetaTagParameters: {
-          title: 'Check out this amazing app!',
-          description: 'Download our app and get amazing features',
+          title: 'Your Title',
+          description: 'Your Description',
           imageLink: 'https://yourapp.com/app-icon.png'
         },
         attributionParameters: {
-          channel: 'social',
-          campaign: 'summer_sale',
-          mediaSource: 'facebook',
+          channel: 'my_channel',
+          campaign: 'sanu',
+          mediaSource: 'at_invite',
           p1: 'param1_value',
           p2: 'param2_value',
           p3: 'param3_value',
@@ -99,7 +98,7 @@ export class DynamicLinkPage implements OnInit, OnDestroy {
       };
       
       // Call the actual SDK method
-      this.createdDynamicLink = await this.trackier.createDynamicLink(dynamicLinkConfig);
+      this.createdDynamicLink = await this.apptrove.createDynamicLink(dynamicLinkConfig);
       await this.showToast('Dynamic link created successfully!');
       console.log('Dynamic link created:', this.createdDynamicLink);
     } catch (error) {
@@ -118,17 +117,17 @@ export class DynamicLinkPage implements OnInit, OnDestroy {
       this.testResult = '';
       
       // Hardcoded URL to resolve
-      const urlToResolve = 'https://trackier58.u9ilnk.me/d/8X7iwyXsyA';
+      const urlToResolve = 'https://trackier58.u9ilnk.me/d/NKmWH9E7b1';
       
       // Check if plugin is available before calling
-      if (!this.trackier) {
+      if (!this.apptrove) {
         this.testResult = 'Plugin not installed - Cannot resolve deep link';
-        await this.showToast('Trackier plugin not available');
+        await this.showToast('AppTrove plugin not available');
         return;
       }
       
       // Call the actual SDK method
-      const result = await this.trackier.resolveDeeplinkUrl(urlToResolve);
+      const result = await this.apptrove.resolveDeeplinkUrl(urlToResolve);
       
       // Show the result
       if (result && result.url) {

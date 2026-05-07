@@ -1,0 +1,32 @@
+<ion-content [fullscreen]="true" [scrollY]="false" class="onboarding-page">
+  <div class="onboarding-shell">
+    <div class="hero-mark">
+      <img src="assets/app_logo.png" alt="Cordmarket logo" />
+    </div>
+
+    <div class="hero-copy">
+      <span class="eyebrow">Welcome to Cordmarket</span>
+      <h1>Simple shopping. Faster checkouts.</h1>
+      <p>Track events, open deep links, and test AppTrove flows in one clean demo app.</p>
+    </div>
+
+    <div class="feature-row">
+      <div class="feature-pill" *ngFor="let feature of features">
+        <ion-icon [name]="feature.icon" color="primary"></ion-icon>
+        <div>
+          <strong>{{ feature.title }}</strong>
+          <span>{{ feature.description }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-actions">
+      <ion-button expand="block" (click)="finish()" mode="ios">
+        Start Shopping
+      </ion-button>
+      <ion-button fill="clear" expand="block" (click)="finish()">
+        Skip
+      </ion-button>
+    </div>
+  </div>
+</ion-content>

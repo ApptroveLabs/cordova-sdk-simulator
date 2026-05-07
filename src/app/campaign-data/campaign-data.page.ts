@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { TrackierCordovaPlugin, TrackierEvent } from 'com.trackier.cordova_sdk/ionic-native/trackier/ngx';
+import { AppTroveCordovaPlugin, AppTroveEvent } from 'com.apptrove.cordova_sdk/ionic-native/apptrove/ngx';
+import { AppTroveEvents } from '../utils/apptrove-events';
 
 interface CampaignData {
-  trackierId: string;
+  appTroveId: string;
   ad: string;
   adId: string;
   campaign: string;
@@ -27,9 +28,10 @@ interface CampaignData {
   styleUrls: ['./campaign-data.page.scss'],
 })
 export class CampaignDataPage implements OnInit {
+  eventId: string = AppTroveEvents.PRODUCT_SEARCH;
   
   campaignData: CampaignData = {
-    trackierId: '',
+    appTroveId: '',
     ad: '',
     adId: '',
     campaign: '',
@@ -51,7 +53,7 @@ export class CampaignDataPage implements OnInit {
   isLoading = false;
   errorMessage = '';
 
-  constructor(private trackierCordovaPlugin: TrackierCordovaPlugin) {}
+  constructor(private apptroveCordovaPlugin: AppTroveCordovaPlugin) {}
 
   ngOnInit() {
     console.log('Campaign Data Page initialized');
@@ -69,25 +71,25 @@ export class CampaignDataPage implements OnInit {
       console.log('Starting to retrieve campaign data...');
 
       // Retrieve all campaign data using individual promises
-      this.campaignData.trackierId = await this.getCampaignValue(() => this.trackierCordovaPlugin.getTrackierId());
-      this.campaignData.ad = await this.getCampaignValue(() => this.trackierCordovaPlugin.getAd());
-      this.campaignData.adId = await this.getCampaignValue(() => this.trackierCordovaPlugin.getAdID());
-      this.campaignData.campaign = await this.getCampaignValue(() => this.trackierCordovaPlugin.getCampaign());
-      this.campaignData.campaignId = await this.getCampaignValue(() => this.trackierCordovaPlugin.getCampaignID());
-      this.campaignData.adSet = await this.getCampaignValue(() => this.trackierCordovaPlugin.getAdSet());
-      this.campaignData.adSetId = await this.getCampaignValue(() => this.trackierCordovaPlugin.getAdSetID());
-      this.campaignData.channel = await this.getCampaignValue(() => this.trackierCordovaPlugin.getChannel());
-      this.campaignData.p1 = await this.getCampaignValue(() => this.trackierCordovaPlugin.getP1());
-      this.campaignData.p2 = await this.getCampaignValue(() => this.trackierCordovaPlugin.getP2());
-      this.campaignData.p3 = await this.getCampaignValue(() => this.trackierCordovaPlugin.getP3());
-      this.campaignData.p4 = await this.getCampaignValue(() => this.trackierCordovaPlugin.getP4());
-      this.campaignData.p5 = await this.getCampaignValue(() => this.trackierCordovaPlugin.getP5());
-      this.campaignData.clickId = await this.getCampaignValue(() => this.trackierCordovaPlugin.getClickId());
-      this.campaignData.dlv = await this.getCampaignValue(() => this.trackierCordovaPlugin.getDlv());
-      this.campaignData.pid = await this.getCampaignValue(() => this.trackierCordovaPlugin.getPid());
+      this.campaignData.appTroveId = await this.getCampaignValue(() => this.apptroveCordovaPlugin.getAppTroveId());
+      this.campaignData.ad = await this.getCampaignValue(() => this.apptroveCordovaPlugin.getAd());
+      this.campaignData.adId = await this.getCampaignValue(() => this.apptroveCordovaPlugin.getAdID());
+      this.campaignData.campaign = await this.getCampaignValue(() => this.apptroveCordovaPlugin.getCampaign());
+      this.campaignData.campaignId = await this.getCampaignValue(() => this.apptroveCordovaPlugin.getCampaignID());
+      this.campaignData.adSet = await this.getCampaignValue(() => this.apptroveCordovaPlugin.getAdSet());
+      this.campaignData.adSetId = await this.getCampaignValue(() => this.apptroveCordovaPlugin.getAdSetID());
+      this.campaignData.channel = await this.getCampaignValue(() => this.apptroveCordovaPlugin.getChannel());
+      this.campaignData.p1 = await this.getCampaignValue(() => this.apptroveCordovaPlugin.getP1());
+      this.campaignData.p2 = await this.getCampaignValue(() => this.apptroveCordovaPlugin.getP2());
+      this.campaignData.p3 = await this.getCampaignValue(() => this.apptroveCordovaPlugin.getP3());
+      this.campaignData.p4 = await this.getCampaignValue(() => this.apptroveCordovaPlugin.getP4());
+      this.campaignData.p5 = await this.getCampaignValue(() => this.apptroveCordovaPlugin.getP5());
+      this.campaignData.clickId = await this.getCampaignValue(() => this.apptroveCordovaPlugin.getClickId());
+      this.campaignData.dlv = await this.getCampaignValue(() => this.apptroveCordovaPlugin.getDlv());
+      this.campaignData.pid = await this.getCampaignValue(() => this.apptroveCordovaPlugin.getPid());
       
       // Handle boolean value for retargeting
-      const retargetingValue = await this.getCampaignValue(() => this.trackierCordovaPlugin.getIsRetargeting());
+      const retargetingValue = await this.getCampaignValue(() => this.apptroveCordovaPlugin.getIsRetargeting());
       this.campaignData.isRetargeting = retargetingValue === 'true';
 
       console.log('Campaign data retrieved successfully:', this.campaignData);
@@ -113,8 +115,8 @@ export class CampaignDataPage implements OnInit {
 
   async trackEvent() {
     try {
-      const trackierEvent = new TrackierEvent("1CFfUn3xEY");
-      await this.trackierCordovaPlugin.trackEvent(trackierEvent);
+      const apptroveEvent = new AppTroveEvent(this.eventId);
+      await this.apptroveCordovaPlugin.trackEvent(apptroveEvent);
       console.log('Event tracked successfully');
     } catch (error) {
       console.error('Error tracking event:', error);

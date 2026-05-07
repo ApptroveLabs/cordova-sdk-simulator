@@ -1,14 +1,134 @@
 <ion-app>
-  <!-- Splash screen (condition to hide after initialization) -->
-  <div *ngIf="isSplashVisible" id="splash-screen" class="splash-screen">
-    <div class="logo-container">
-      <img src="assets/app_logo.png" alt="Splash Logo" class="splash-logo" />
-    </div>
-    <h1 class="splash-title">Welcome to Ionic Simulator</h1>
-    <p class="splash-tagline">Your ultimate app development companion</p>
-    <div class="loader"></div>
-  </div>
+  <!-- Side Menu (Drawer) -->
+  <ion-menu contentId="main-content" menuId="main-menu" type="overlay">
+    <ion-header class="ion-no-border">
+      <ion-toolbar color="primary">
+        <div class="menu-header ion-padding">
+          <div class="avatar-container">
+            <img src="assets/app_logo.png" alt="Cordmarket logo" />
+          </div>
+          <div class="user-info">
+            <h3>{{ userEmail || 'Sign In / Register' }}</h3>
+            <p *ngIf="userEmail">Member</p>
+            <p *ngIf="!userEmail">Reviewer access required</p>
+          </div>
+        </div>
+      </ion-toolbar>
+    </ion-header>
+    
+    <ion-content class="menu-content">
+      <ion-list lines="none">
+        <ion-item button *ngIf="userEmail" (click)="navigate('/home')">
+          <ion-icon slot="start" name="home-outline"></ion-icon>
+          <ion-label>Home</ion-label>
+        </ion-item>
+        
+        <ion-item button *ngIf="userEmail" (click)="navigate('/wishlist')">
+          <ion-icon slot="start" name="heart-outline"></ion-icon>
+          <ion-label>My Wishlist</ion-label>
+        </ion-item>
+
+        <ion-item button *ngIf="userEmail" (click)="showOrders()">
+          <ion-icon slot="start" name="bag-handle-outline"></ion-icon>
+          <ion-label>My Orders</ion-label>
+        </ion-item>
+
+        <ion-item button *ngIf="userEmail" (click)="shareApp()">
+          <ion-icon slot="start" name="share-social-outline"></ion-icon>
+          <ion-label>Share Cordmarket</ion-label>
+        </ion-item>
+
+        <div class="menu-divider" *ngIf="userEmail"></div>
+
+        <ion-item button (click)="showPolicy('Privacy Policy')">
+          <ion-icon slot="start" name="shield-checkmark-outline"></ion-icon>
+          <ion-label>Privacy Policy</ion-label>
+        </ion-item>
+
+        <ion-item button (click)="showPolicy('Terms & Conditions')">
+          <ion-icon slot="start" name="document-text-outline"></ion-icon>
+          <ion-label>Terms & Conditions</ion-label>
+        </ion-item>
+
+        <ion-item button (click)="showAbout()">
+          <ion-icon slot="start" name="information-circle-outline"></ion-icon>
+          <ion-label>About Us</ion-label>
+        </ion-item>
+
+        <div class="menu-divider"></div>
+
+        <ion-item button *ngIf="userEmail" (click)="navigate('/built-in-events')">
+          <ion-icon slot="start" name="flash-outline"></ion-icon>
+          <ion-label>Built-in Events</ion-label>
+        </ion-item>
+
+        <ion-item button *ngIf="userEmail" (click)="navigate('/customs-events')">
+          <ion-icon slot="start" name="code-slash-outline"></ion-icon>
+          <ion-label>Custom Events</ion-label>
+        </ion-item>
+
+        <ion-item button *ngIf="userEmail" (click)="navigate('/campaign-data')">
+          <ion-icon slot="start" name="stats-chart-outline"></ion-icon>
+          <ion-label>Campaign Data</ion-label>
+        </ion-item>
+
+        <ion-item button *ngIf="userEmail" (click)="navigate('/dynamic-link')">
+          <ion-icon slot="start" name="link-outline"></ion-icon>
+          <ion-label>Dynamic Links</ion-label>
+        </ion-item>
+
+        <ion-item button *ngIf="userEmail" (click)="navigate('/deep-linking')">
+          <ion-icon slot="start" name="navigate-outline"></ion-icon>
+          <ion-label>Deep Linking</ion-label>
+        </ion-item>
+
+        <ion-item button *ngIf="userEmail" (click)="navigate('/complete-event')">
+          <ion-icon slot="start" name="send-outline"></ion-icon>
+          <ion-label>Complete Event</ion-label>
+        </ion-item>
+
+        <ion-item button *ngIf="userEmail" (click)="navigate('/product-page')">
+          <ion-icon slot="start" name="pricetag-outline"></ion-icon>
+          <ion-label>Product Page</ion-label>
+        </ion-item>
+
+        <ion-item button *ngIf="userEmail" (click)="navigate('/cake-screen')">
+          <ion-icon slot="start" name="cafe-outline"></ion-icon>
+          <ion-label>Cake Screen</ion-label>
+        </ion-item>
+
+        <div class="menu-divider" *ngIf="userEmail"></div>
+
+        <ion-item button *ngIf="userEmail" (click)="logout()" class="logout-item">
+          <ion-icon slot="start" name="log-out-outline"></ion-icon>
+          <ion-label>Logout</ion-label>
+        </ion-item>
+
+        <ion-item button *ngIf="userEmail" (click)="deleteAccount()" class="delete-item">
+          <ion-icon slot="start" name="trash-outline"></ion-icon>
+          <ion-label>Delete Account</ion-label>
+        </ion-item>
+
+        <ion-item button *ngIf="!userEmail" (click)="navigate('/login')">
+          <ion-icon slot="start" name="log-in-outline"></ion-icon>
+          <ion-label>Login</ion-label>
+        </ion-item>
+
+        <ion-item button *ngIf="!userEmail" (click)="navigate('/signup')">
+          <ion-icon slot="start" name="person-add-outline"></ion-icon>
+          <ion-label>Sign Up</ion-label>
+        </ion-item>
+
+        <ion-item button *ngIf="!userEmail" (click)="navigate('/onboarding')">
+          <ion-icon slot="start" name="compass-outline"></ion-icon>
+          <ion-label>Onboarding</ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-content>
+  </ion-menu>
 
   <!-- Main App content -->
-  <ion-router-outlet></ion-router-outlet>
+  <div class="ion-page" id="main-content">
+    <ion-router-outlet></ion-router-outlet>
+  </div>
 </ion-app>

@@ -33,22 +33,24 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
-                        <!-- Intent filter for deep linking -->
+            <!-- Intent filter for deep linking -->
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <!-- Add your deep link configurations -->
+                <!-- Custom scheme used by the simulator -->
                 <data
-                    android:host="www.trackier.com"
-                    android:pathPrefix="/product"
-                    android:scheme="unilink" />
+                    android:scheme="cordmarket" />
 
-                <!-- App Link -->
+                <!-- Trackier App Links -->
                 <data
-                    android:host="trackier.u9ilnk.me"
-                    android:pathPrefix="/d/"
+                    android:host="trackier58.u9ilnk.me"
+                    android:pathPrefix="/d"
+                    android:scheme="https" />
+                <data
+                    android:host="trackier58.u9ilnk.me"
+                    android:pathPrefix="/product"
                     android:scheme="https" />
             </intent-filter>
 

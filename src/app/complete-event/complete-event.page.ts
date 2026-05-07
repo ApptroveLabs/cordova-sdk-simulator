@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { TrackierCordovaPlugin, TrackierEvent } from 'com.trackier.cordova_sdk/ionic-native/trackier/ngx';
+import { AppTroveCordovaPlugin, AppTroveEvent } from 'com.apptrove.cordova_sdk/ionic-native/apptrove/ngx';
 
 @Component({
   selector: 'app-complete-event',
@@ -10,13 +10,13 @@ export class CompleteEventPage implements OnInit {
 
   // Event details - now editable by user
   eventDetails = {
-    eventId: 'B4N_In4cIP',
+    eventId: 'mEqP4aD8dU',
     orderId: 'REG_001',
-    productId: 'FREE_PLAN',
+    productId: '23434234',
     currency: 'USD',
-    couponCode: '343434234',
-    discount: 3.1415,
-    revenue: 34234234.32423,
+    couponCode: 'coupontest123satyam',
+    discount: 20,
+    revenue: 20,
     params: {
       param1: 'Test1',
       param2: 'Test2',
@@ -49,7 +49,7 @@ export class CompleteEventPage implements OnInit {
   isEventSent = false;
   isLoading = false;
 
-  constructor(private trackierCordovaPlugin: TrackierCordovaPlugin) { }
+  constructor(private apptroveCordovaPlugin: AppTroveCordovaPlugin) { }
 
   ngOnInit() {
   }
@@ -57,13 +57,13 @@ export class CompleteEventPage implements OnInit {
   // Reset all values to their defaults
   resetToDefaults() {
     this.eventDetails = {
-      eventId: 'B4N_In4cIP',
+      eventId: 'mEqP4aD8dU',
       orderId: 'REG_001',
-      productId: 'FREE_PLAN',
+      productId: '23434234',
       currency: 'USD',
-      couponCode: '343434234',
-      discount: 3.1415,
-      revenue: 34234234.32423,
+      couponCode: 'coupontest123satyam',
+      discount: 20,
+      revenue: 20,
       params: {
         param1: 'Test1',
         param2: 'Test2',
@@ -111,14 +111,14 @@ export class CompleteEventPage implements OnInit {
     }));
   }
 
-  // Demo function to showcase all Trackier SDK event tracking capabilities
+  // Demo function to showcase all AppTrove SDK event tracking capabilities
   async sendCompleteEvent() {
     try {
       this.isLoading = true;
       this.isEventSent = false;
       
       // Create event with COMPLETE_REGISTRATION ID or Custom Event ID
-      var event = new TrackierEvent(this.eventDetails.eventId);
+      var event = new AppTroveEvent(this.eventDetails.eventId);
 
       // Built-in fields for event tracking
       event.setOrderId(this.eventDetails.orderId);
@@ -145,16 +145,16 @@ export class CompleteEventPage implements OnInit {
         event.setEventValue(key, this.eventDetails.customValues[key as keyof typeof this.eventDetails.customValues]);
       });
 
-      // Set user details in Trackier SDK
-      await this.trackierCordovaPlugin.setUserId(this.eventDetails.userDetails.userId);
-      await this.trackierCordovaPlugin.setUserEmail(this.eventDetails.userDetails.email);
-      await this.trackierCordovaPlugin.setUserName(this.eventDetails.userDetails.name);
-      await this.trackierCordovaPlugin.setUserPhone(this.eventDetails.userDetails.phone);
-      await this.trackierCordovaPlugin.setDOB(this.eventDetails.userDetails.dob);
-      await this.trackierCordovaPlugin.setGender(this.eventDetails.userDetails.gender);
+      // Set user details in AppTrove SDK
+      await this.apptroveCordovaPlugin.setUserId(this.eventDetails.userDetails.userId);
+      await this.apptroveCordovaPlugin.setUserEmail(this.eventDetails.userDetails.email);
+      await this.apptroveCordovaPlugin.setUserName(this.eventDetails.userDetails.name);
+      await this.apptroveCordovaPlugin.setUserPhone(this.eventDetails.userDetails.phone);
+      await this.apptroveCordovaPlugin.setDOB(this.eventDetails.userDetails.dob);
+      await this.apptroveCordovaPlugin.setGender(this.eventDetails.userDetails.gender);
 
       // Send the event to Apptrove
-      this.trackierCordovaPlugin.trackEvent(event);
+      this.apptroveCordovaPlugin.trackEvent(event);
       
       this.isEventSent = true;
       console.log("Complete event tracked successfully!");

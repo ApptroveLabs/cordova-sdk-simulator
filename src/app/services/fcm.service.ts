@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { PushNotifications, Token } from '@capacitor/push-notifications';
-import { TrackierCordovaPlugin } from 'com.trackier.cordova_sdk/ionic-native/trackier/ngx';
+import { AppTroveCordovaPlugin } from 'com.apptrove.cordova_sdk/ionic-native/apptrove/ngx';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +11,7 @@ export class FcmService {
 
   constructor(
     private platform: Platform,
-    private trackierCordovaPlugin: TrackierCordovaPlugin
+    private apptroveCordovaPlugin: AppTroveCordovaPlugin
   ) {}
 
   /**
@@ -56,7 +56,7 @@ export class FcmService {
   }
 
   /**
-   * Handle token refresh - only send to Trackier if token has changed
+   * Handle token refresh - only send to AppTrove if token has changed
    * Similar to Android: override fun onNewToken(token: String)
    */
   private handleTokenRefresh(newToken: string): void {
@@ -68,14 +68,14 @@ export class FcmService {
       if (storedToken !== newToken) {
         console.log('FCM Token changed or first time:', newToken);
         
-        // Send the new token to Trackier SDK
-        this.trackierCordovaPlugin.sendFcmToken(newToken);
-        console.log('FCM Token sent to Trackier SDK successfully');
+        // Send the new token to AppTrove SDK
+        this.apptroveCordovaPlugin.sendFcmToken(newToken);
+        console.log('FCM Token sent to AppTrove SDK successfully');
 
         // Store the new token
         localStorage.setItem(this.FCM_TOKEN_KEY, newToken);
       } else {
-        console.log('FCM Token unchanged, not sending to Trackier SDK');
+        console.log('FCM Token unchanged, not sending to AppTrove SDK');
       }
     } catch (error) {
       console.error('Error handling FCM token refresh:', error);

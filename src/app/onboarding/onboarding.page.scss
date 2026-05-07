@@ -1,0 +1,136 @@
+.onboarding-page {
+  --background: linear-gradient(180deg, #eefdfa 0%, #ffffff 44%, #f8fafc 100%);
+}
+
+.onboarding-shell {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 28px 20px 22px;
+  overflow: hidden;
+}
+
+.hero-mark {
+  display: flex;
+  justify-content: center;
+  padding-top: 12px;
+
+  img {
+    width: 132px;
+    height: 132px;
+    object-fit: contain;
+    filter: drop-shadow(0 16px 30px rgba(15, 23, 42, 0.12));
+  }
+}
+
+.hero-copy {
+  text-align: center;
+  padding: 8px 12px 0;
+
+  .eyebrow {
+    display: inline-flex;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: rgba(15, 118, 110, 0.1);
+    color: var(--ion-color-primary);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  h1 {
+    margin: 0;
+    font-size: 30px;
+    line-height: 1.1;
+    font-weight: 900;
+    color: #0f172a;
+  }
+
+  p {
+    margin: 12px auto 0;
+    max-width: 320px;
+    color: #475569;
+    font-size: 16px;
+    line-height: 1.55;
+  }
+}
+
+.feature-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  padding: 0 2px;
+}
+
+.feature-pill {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(15, 118, 110, 0.1);
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+
+  ion-icon {
+    font-size: 24px;
+    flex: 0 0 auto;
+  }
+
+  strong {
+    display: block;
+    color: #0f172a;
+    font-size: 14px;
+    font-weight: 800;
+  }
+
+  span {
+    display: block;
+    color: #64748b;
+    font-size: 12px;
+    margin-top: 2px;
+  }
+}
+
+.footer-actions {
+  display: grid;
+  gap: 6px;
+  margin-top: 14px;
+
+  ion-button {
+    --border-radius: 16px;
+    --height: 54px;
+    font-weight: 800;
+  }
+}
+
+@media (min-width: 768px) {
+  .onboarding-shell {
+    max-width: 520px;
+    margin: 0 auto;
+    padding-top: 42px;
+    padding-bottom: 32px;
+  }
+
+  .hero-mark img {
+    width: 152px;
+    height: 152px;
+  }
+
+  .hero-copy h1 {
+    font-size: 36px;
+  }
+
+  .feature-row {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .feature-pill {
+    flex-direction: column;
+    align-items: flex-start;
+    min-height: 132px;
+  }
+}

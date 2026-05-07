@@ -5,10 +5,11 @@ import { FormsModule } from '@angular/forms';
 import { Location } from '@angular/common';
 
 import {
-  TrackierCordovaPlugin,
-  TrackierEvent,
-} from 'com.trackier.cordova_sdk/ionic-native/trackier/ngx';
+  AppTroveCordovaPlugin,
+  AppTroveEvent,
+} from 'com.apptrove.cordova_sdk/ionic-native/apptrove/ngx';
 import { AlertController } from '@ionic/angular';
+import { AppTroveEvents } from '../utils/apptrove-events';
 
 @Component({
   selector: 'app-built-in-events',
@@ -36,25 +37,20 @@ export class BuiltInEventsPage {
     'UPDATE',
   ];
   currencyList = [
-    'USD',
-    'EUR',
-    'GBP',
-    'INR',
-    'AUD',
-    'CAD',
-    'SGD',
-    'CHF',
-    'MYR',
-    'JPY',
+    'USD', 'EUR', 'GBP', 'INR', 'AUD', 'CAD', 'SGD', 'CHF', 'MYR', 'JPY',
+    'ARS', 'BHD', 'BWP', 'BRL', 'BND', 'BGN', 'CLP', 'COP', 'HRK', 'CZK',
+    'DKK', 'AED', 'HKD', 'HUF', 'ISK', 'IDR', 'ILS', 'KZT', 'KWD', 'LYD',
+    'MUR', 'MXN', 'NPR', 'NZD', 'NOK', 'OMR', 'PKR', 'PHP', 'PLN', 'RUB',
+    'RON', 'SAR', 'ZAR', 'KRW', 'LKR', 'SEK', 'TWD', 'THB', 'TTD', 'TRY',
+    'VEF', 'ZMW', 'YER', 'XPF', 'VND', 'VES',
   ];
-
   selectedEvent: string | null = null;
   selectedCurrency: string | null = null;
   revenue: number = 0;
   params: { key: string; value: string }[] = [];
 
   constructor(
-    private trackierCordovaPlugin: TrackierCordovaPlugin,
+    private apptroveCordovaPlugin: AppTroveCordovaPlugin,
     private alertController: AlertController,
     private location: Location,
     private toastController: ToastController
@@ -90,53 +86,53 @@ export class BuiltInEventsPage {
       return;
     }
 
-    let trackierEvent: TrackierEvent | null = null;
+    let apptroveEvent: AppTroveEvent | null = null;
 
     switch (this.selectedEvent) {
       case 'ADD_TO_CART':
-        trackierEvent = new TrackierEvent('Fy4uC1_FlN');
+        apptroveEvent = new AppTroveEvent(AppTroveEvents.ADD_TO_CART);
         break;
       case 'LEVEL_ACHIEVED':
-        trackierEvent = new TrackierEvent('1CFfUn3xEY');
+        apptroveEvent = new AppTroveEvent(AppTroveEvents.LEVEL_ACHIEVED);
         break;
       case 'ADD_TO_WISHLIST':
-        trackierEvent = new TrackierEvent('AOisVC76YG');
+        apptroveEvent = new AppTroveEvent(AppTroveEvents.ADD_TO_WISHLIST);
         break;
       case 'COMPLETE_REGISTRATION':
-        trackierEvent = new TrackierEvent('mEqP4aD8dU');
+        apptroveEvent = new AppTroveEvent(AppTroveEvents.COMPLETE_REGISTRATION);
         break;
       case 'TUTORIAL_COMPLETION':
-        trackierEvent = new TrackierEvent('99VEGvXjN7');
+        apptroveEvent = new AppTroveEvent(AppTroveEvents.TUTORIAL_COMPLETION);
         break;
       case 'PURCHASE':
-        trackierEvent = new TrackierEvent('Q4YsqBKnzZ');
+        apptroveEvent = new AppTroveEvent(AppTroveEvents.PURCHASE);
         break;
       case 'SUBSCRIBE':
-        trackierEvent = new TrackierEvent('B4N_In4cIP');
+        apptroveEvent = new AppTroveEvent(AppTroveEvents.SUBSCRIBE);
         break;
       case 'START_TRIAL':
-        trackierEvent = new TrackierEvent('jYHcuyxWUW');
+        apptroveEvent = new AppTroveEvent(AppTroveEvents.START_TRIAL);
         break;
       case 'ACHIEVEMENT_UNLOCKED':
-        trackierEvent = new TrackierEvent('xTPvxWuNqm');
+        apptroveEvent = new AppTroveEvent(AppTroveEvents.ACHIEVEMENT_UNLOCKED);
         break;
       case 'CONTENT_VIEW':
-        trackierEvent = new TrackierEvent('Jwzois1ays');
+        apptroveEvent = new AppTroveEvent(AppTroveEvents.CONTENT_VIEW);
         break;
       case 'TRAVEL_BOOKING':
-        trackierEvent = new TrackierEvent('yP1-ipVtHV');
+        apptroveEvent = new AppTroveEvent(AppTroveEvents.TRAVEL_BOOKING);
         break;
       case 'SHARE':
-        trackierEvent = new TrackierEvent('dxZXGG1qqL');
+        apptroveEvent = new AppTroveEvent(AppTroveEvents.SHARE);
         break;
       case 'INVITE':
-        trackierEvent = new TrackierEvent('7lnE3OclNT');
+        apptroveEvent = new AppTroveEvent(AppTroveEvents.INVITE);
         break;
       case 'LOGIN':
-        trackierEvent = new TrackierEvent('o91gt1Q0PK');
+        apptroveEvent = new AppTroveEvent(AppTroveEvents.LOGIN);
         break;
       case 'UPDATE':
-        trackierEvent = new TrackierEvent('sEQWVHGThl');
+        apptroveEvent = new AppTroveEvent(AppTroveEvents.UPDATE);
         break;
       default:
         const toast = await this.toastController.create({
@@ -149,17 +145,16 @@ export class BuiltInEventsPage {
         return;
     }
 
-    trackierEvent.setRevenue(this.revenue);
-    trackierEvent.setCurrency(this.selectedCurrency);
+    apptroveEvent.setRevenue(this.revenue);
+    apptroveEvent.setCurrency(this.selectedCurrency);
+    apptroveEvent.setOrderId('324222233f33');
+    apptroveEvent.setEventValue('Event Send', 'To Pannel');
 
-
-    trackierEvent.setCouponCode("SatyamTest10233");
-    this.trackierCordovaPlugin.setUserId("Satyan!232");
-    this.trackierCordovaPlugin.setUserName("Satyam");
-    this.trackierCordovaPlugin.setUserPhone("82528978393");
-    this.trackierCordovaPlugin.setUserEmail("Satyam@gmail.com");
-    this.trackierCordovaPlugin.setDOB("12/1/2022");
-    this.trackierCordovaPlugin.setGender("Male");
+    this.apptroveCordovaPlugin.setUserEmail('Satyam@Apptrove.com');
+    this.apptroveCordovaPlugin.setUserId('###Uy_eeGu');
+    this.apptroveCordovaPlugin.setUserName('Satyam Jha');
+    this.apptroveCordovaPlugin.setUserPhone('8252786821');
+    this.apptroveCordovaPlugin.setGender('Male');
     // Dynamically assign parameters using a switch case for param1, param2, ..., param10
     const paramValues = this.params.map((param) => param.value);
     console.log('Parameter Values:', paramValues);
@@ -167,34 +162,34 @@ export class BuiltInEventsPage {
     for (let i = 0; i < paramValues.length; i++) {
       switch (i) {
         case 0:
-          trackierEvent.setParam1(paramValues[i]);
+          apptroveEvent.setParam1(paramValues[i]);
           break;
         case 1:
-          trackierEvent.setParam2(paramValues[i]);
+          apptroveEvent.setParam2(paramValues[i]);
           break;
         case 2:
-          trackierEvent.setParam3(paramValues[i]);
+          apptroveEvent.setParam3(paramValues[i]);
           break;
         case 3:
-          trackierEvent.setParam4(paramValues[i]);
+          apptroveEvent.setParam4(paramValues[i]);
           break;
         case 4:
-          trackierEvent.setParam5(paramValues[i]);
+          apptroveEvent.setParam5(paramValues[i]);
           break;
         case 5:
-          trackierEvent.setParam6(paramValues[i]);
+          apptroveEvent.setParam6(paramValues[i]);
           break;
         case 6:
-          trackierEvent.setParam7(paramValues[i]);
+          apptroveEvent.setParam7(paramValues[i]);
           break;
         case 7:
-          trackierEvent.setParam8(paramValues[i]);
+          apptroveEvent.setParam8(paramValues[i]);
           break;
         case 8:
-          trackierEvent.setParam9(paramValues[i]);
+          apptroveEvent.setParam9(paramValues[i]);
           break;
         case 9:
-          trackierEvent.setParam10(paramValues[i]);
+          apptroveEvent.setParam10(paramValues[i]);
           break;
         default:
           console.error('Too many parameters!');
@@ -203,7 +198,7 @@ export class BuiltInEventsPage {
     }
 
     try {
-      await this.trackierCordovaPlugin.trackEvent(trackierEvent);
+      await this.apptroveCordovaPlugin.trackEvent(apptroveEvent);
       const toast = await this.toastController.create({
         message: 'Event submitted successfully!',
         duration: 2000,

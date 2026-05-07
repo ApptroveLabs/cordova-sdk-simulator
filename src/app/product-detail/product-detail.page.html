@@ -1,0 +1,61 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home" color="light"></ion-back-button>
+    </ion-buttons>
+    <ion-title color="light">Product Detail</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="share()" color="light">
+        <ion-icon name="share-social-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="product" class="detail-container">
+    <div class="product-image-container">
+      <img [src]="product.imageUrl" class="main-image" />
+      <div class="floating-actions">
+        <div class="action-btn wishlist" (click)="toggleWishlist()">
+          <ion-icon [name]="isInWishlist ? 'heart' : 'heart-outline'" [color]="isInWishlist ? 'danger' : 'dark'"></ion-icon>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-card">
+      <div class="info-header">
+        <span class="category-tag">{{ product.category }}</span>
+        <h1>{{ product.name }}</h1>
+        <p class="price-tag">${{ product.price }}</p>
+      </div>
+      
+      <div class="divider"></div>
+      
+      <div class="description-section">
+        <h3>Description</h3>
+        <p>{{ product.description }}</p>
+      </div>
+
+      <div class="features-section ion-margin-top">
+        <div class="feature-item">
+          <ion-icon name="shield-checkmark-outline"></ion-icon>
+          <span>Original Product</span>
+        </div>
+        <div class="feature-item">
+          <ion-icon name="return-up-back-outline"></ion-icon>
+          <span>7 Days Return</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>
+
+<ion-footer class="ion-no-border">
+  <ion-toolbar class="ion-padding">
+    <ion-button expand="block" (click)="addToCart()" mode="ios" class="buy-now-btn">
+      <ion-icon name="cart-outline" slot="start"></ion-icon>
+      Add to Cart
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>

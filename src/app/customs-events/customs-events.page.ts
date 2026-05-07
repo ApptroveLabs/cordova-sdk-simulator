@@ -4,9 +4,9 @@ import { IonicModule, ToastController } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
 import { Location } from '@angular/common';
 import {
-  TrackierCordovaPlugin,
-  TrackierEvent,
-} from 'com.trackier.cordova_sdk/ionic-native/trackier/ngx';
+  AppTroveCordovaPlugin,
+  AppTroveEvent,
+} from 'com.apptrove.cordova_sdk/ionic-native/apptrove/ngx';
 
 @Component({
   selector: 'app-customs-events',
@@ -29,14 +29,13 @@ export class CustomsEventsPage {
     'MYR',
     'JPY',
   ];
-
   eventId: string = ''; // Corrected variable name
   selectedCurrency: string | null = null;
   revenue: number = 0;
   params: { key: string; value: string }[] = [];
 
   constructor(
-    private trackierCordovaPlugin: TrackierCordovaPlugin,
+    private apptroveCordovaPlugin: AppTroveCordovaPlugin,
     private location: Location,
     private toastController: ToastController
   ) {}
@@ -93,17 +92,17 @@ export class CustomsEventsPage {
       }
     }
 
-    const trackierEvent = new TrackierEvent(this.eventId);
+    const apptroveEvent = new AppTroveEvent(this.eventId);
 
-    trackierEvent.setRevenue(this.revenue);
-    trackierEvent.setCurrency(this.selectedCurrency);
-    trackierEvent.setCouponCode("SatyamTest10233");
-    this.trackierCordovaPlugin.setUserId("Satyan!232");
-    this.trackierCordovaPlugin.setUserName("Satyam");
-    this.trackierCordovaPlugin.setUserPhone("82528978393");
-    this.trackierCordovaPlugin.setUserEmail("Satyam@gmail.com");
-    this.trackierCordovaPlugin.setDOB("12/1/2022");
-    this.trackierCordovaPlugin.setGender("Male");
+    apptroveEvent.setRevenue(this.revenue);
+    apptroveEvent.setCurrency(this.selectedCurrency);
+    apptroveEvent.setOrderId('324222233f33');
+    apptroveEvent.setEventValue('Event Send', 'To Pannel');
+    this.apptroveCordovaPlugin.setUserEmail('Satyam@Apptrove.com');
+    this.apptroveCordovaPlugin.setUserId('#jdjdjdjh3');
+    this.apptroveCordovaPlugin.setUserName('Satyam Jha');
+    this.apptroveCordovaPlugin.setUserPhone('8252786821');
+    this.apptroveCordovaPlugin.setGender('Male');
 
 
     // Dynamically assign parameters using a switch case for param1, param2, ..., param10
@@ -113,34 +112,34 @@ export class CustomsEventsPage {
     for (let i = 0; i < paramValues.length; i++) {
       switch (i) {
         case 0:
-          trackierEvent.setParam1(paramValues[i]);
+          apptroveEvent.setParam1(paramValues[i]);
           break;
         case 1:
-          trackierEvent.setParam2(paramValues[i]);
+          apptroveEvent.setParam2(paramValues[i]);
           break;
         case 2:
-          trackierEvent.setParam3(paramValues[i]);
+          apptroveEvent.setParam3(paramValues[i]);
           break;
         case 3:
-          trackierEvent.setParam4(paramValues[i]);
+          apptroveEvent.setParam4(paramValues[i]);
           break;
         case 4:
-          trackierEvent.setParam5(paramValues[i]);
+          apptroveEvent.setParam5(paramValues[i]);
           break;
         case 5:
-          trackierEvent.setParam6(paramValues[i]);
+          apptroveEvent.setParam6(paramValues[i]);
           break;
         case 6:
-          trackierEvent.setParam7(paramValues[i]);
+          apptroveEvent.setParam7(paramValues[i]);
           break;
         case 7:
-          trackierEvent.setParam8(paramValues[i]);
+          apptroveEvent.setParam8(paramValues[i]);
           break;
         case 8:
-          trackierEvent.setParam9(paramValues[i]);
+          apptroveEvent.setParam9(paramValues[i]);
           break;
         case 9:
-          trackierEvent.setParam10(paramValues[i]);
+          apptroveEvent.setParam10(paramValues[i]);
           break;
         default:
           console.error('Too many parameters!');
@@ -149,7 +148,7 @@ export class CustomsEventsPage {
     }
 
     try {
-      await this.trackierCordovaPlugin.trackEvent(trackierEvent);
+      await this.apptroveCordovaPlugin.trackEvent(apptroveEvent);
       const toast = await this.toastController.create({
         message: 'Event submitted successfully!',
         duration: 2000,
