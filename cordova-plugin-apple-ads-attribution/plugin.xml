@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+        id="cordova-plugin-apple-ads-attribution"
+        version="1.0.0">
+    <name>Apple Ads Attribution</name>
+    <description>Cordova plugin to get Apple Ads Attribution token from AdServices framework</description>
+    <license>MIT</license>
+    <keywords>cordova,apple,ads,attribution,adservices</keywords>
+    
+    <platform name="ios">
+        <config-file target="config.xml" parent="/*">
+            <feature name="AppleAdsAttribution">
+                <param name="ios-package" value="AppleAdsAttribution" />
+            </feature>
+        </config-file>
+        
+        <config-file target="*-Info.plist" parent="/*">
+            <key>NSUserTrackingUsageDescription</key>
+            <string>This app uses tracking to provide personalized ads and improve your experience.</string>
+        </config-file>
+        
+        <framework src="AdServices.framework" weak="true" />
+        
+        <header-file src="src/ios/AppleAdsAttribution.h" />
+        <source-file src="src/ios/AppleAdsAttribution.m" />
+        
+        <js-module src="www/AppleAdsAttribution.js" name="AppleAdsAttribution">
+            <clobbers target="AppleAdsAttribution" />
+        </js-module>
+    </platform>
+</plugin>

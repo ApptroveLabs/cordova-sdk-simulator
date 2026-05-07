@@ -166,18 +166,21 @@ export class AppComponent {
     }
   }
 
-  private initializeAppTroveSDK() {
+  private async initializeAppTroveSDK() {
     const sdkKey = this.platform.is('android') ? environment.androidAppTroveSdkKey : environment.iosAppTroveSdkKey;
-    const secretId = this.platform.is('android') ? environment.androidAppTroveSecretId : environment.iosAppTroveSecretId;
-    const secretKey = this.platform.is('android') ? environment.androidAppTroveSecretKey : environment.iosAppTroveSecretKey;
 
     if (!sdkKey) {
       console.error('CRITICAL: AppTrove SDK Key is empty.');
       return;
     }
 
+    // IMPORTANT: Get IDFA BEFORE SDK initialization (iOS only)
+    if (this.platform.is('ios')) {
+      console.log('Getting IDFA before SDK initialization...');
+      await this.getAppleAdsToken();
+    }
+
     const apptroveConfig = new AppTroveConfig(sdkKey, AppTroveEnvironment.Development);
-    apptroveConfig.setAppSecret(secretId, secretKey);
 
     if (this.platform.is('ios')) {
       this.apptroveCordovaPlugin.updatePostbackConversion(10);
@@ -187,11 +190,13 @@ export class AppComponent {
     this.apptroveCordovaPlugin.initializeSDK(apptroveConfig)
       .then(() => {
         console.log('AppTrove SDK initialized');
-        if (this.platform.is('android')) this.fcmService.initializeFCM();
+        if (this.platform.is('android')) {
+          this.fcmService.initializeFCM();
+          void this.getAppleAdsToken();
+        }
         if (this.platform.is('ios')) {
           this.apnService.initializeAPN();
           this.apptroveCordovaPlugin.subscribeAttributionlink();
-          this.getAppleAdsToken();
         }
       })
       .catch(error => console.error('Error initializing AppTrove SDK:', error))
@@ -207,16 +212,23 @@ export class AppComponent {
   private async getAppleAdsToken() {
     try {
       if (!this.platform.is('ios')) return;
+      
+      // Request tracking permission and get IDFA
       const trackingResult = await AdvertisingId.requestTracking();
+      console.log('Tracking permission result:', trackingResult.value);
+      
       if (trackingResult.value === 'Authorized') {
         const advertisingResult = await AdvertisingId.getAdvertisingId();
-        const token = advertisingResult.id;
-        if (token) {
-          this.apptroveCordovaPlugin.updateAppleAdsToken(token);
+        const idfa = advertisingResult.id;
+        if (idfa) {
+          this.apptroveCordovaPlugin.updateAppleAdsToken(idfa);
+          console.log('IDFA sent to SDK:', idfa);
         }
+      } else {
+        console.log('Tracking permission not authorized:', trackingResult.value);
       }
     } catch (error) {
-      console.error("Error getting Apple Ads Token:", error);
+      console.error("Error getting IDFA:", error);
     }
   }
 

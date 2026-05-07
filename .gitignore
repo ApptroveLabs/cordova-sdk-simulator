@@ -68,3 +68,29 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Firebase config files (contain sensitive keys)
+google-services.json
+GoogleService-Info.plist
+
+# Android signing keys
+*.jks
+*.keystore
+key.properties
+
+# iOS provisioning profiles
+*.mobileprovision
+*.p12
+*.cer
+
+# Gradle properties (may contain signing credentials)
+gradle.properties
+
+# Sensitive documentation
+FCM_APN_COMPARISON.md
+SETUP_VERIFICATION.md

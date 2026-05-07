@@ -1,5 +1,9 @@
 PODS:
   - Alamofire (5.9.1)
+  - apptrove-ios-sdk (2.0.1):
+    - Alamofire (~> 5.9.0)
+    - CryptoSwift (~> 1.4.1)
+    - Willow (~> 5.0)
   - Capacitor (6.2.0):
     - CapacitorCordova
   - CapacitorApp (6.0.2):
@@ -18,13 +22,9 @@ PODS:
   - CapacitorStatusBar (6.0.2):
     - Capacitor
   - CordovaPluginsStatic (6.2.0):
+    - apptrove-ios-sdk (~> 2.0.0)
     - CapacitorCordova
-    - trackier-ios-sdk (~> 1.6.76)
   - CryptoSwift (1.4.3)
-  - trackier-ios-sdk (1.6.76):
-    - Alamofire (~> 5.9.0)
-    - CryptoSwift (~> 1.4.1)
-    - Willow (~> 5.0)
   - Willow (5.2.1)
 
 DEPENDENCIES:
@@ -42,8 +42,8 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - Alamofire
+    - apptrove-ios-sdk
     - CryptoSwift
-    - trackier-ios-sdk
     - Willow
 
 EXTERNAL SOURCES:
@@ -70,6 +70,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Alamofire: f36a35757af4587d8e4f4bfa223ad10be2422b8c
+  apptrove-ios-sdk: d9d20470bcf8fe31b91c6d593dc15593ac906c5d
   Capacitor: 05d35014f4425b0740fc8776481f6a369ad071bf
   CapacitorApp: e1e6b7d05e444d593ca16fd6d76f2b7c48b5aea7
   CapacitorCamera: 9bc7b005d0e6f1d5f525b8137045b60cffffce79
@@ -79,9 +80,8 @@ SPEC CHECKSUMS:
   CapacitorKeyboard: e89189ad398b815b6ff7e52271f0fb4f911a0a0a
   CapacitorPushNotifications: 88f40c5f06dfe54f2c0619173e11ecbff8661a2f
   CapacitorStatusBar: b16799a26320ffa52f6c8b01737d5a95bbb8f3eb
-  CordovaPluginsStatic: d46cbbc4d566b9a0adb4bc6b8e2311122f124c80
+  CordovaPluginsStatic: 9d43a49a099a09f8d3d76dbf33a2c5d1dfe02be9
   CryptoSwift: a0799ee936271bd2253a006f1e4523df21845000
-  trackier-ios-sdk: 93d333094e2130158750ebffc75054706f95b501
   Willow: a6310f9aedcb6f4de8c35b94fd3416a660ae9280
 
 PODFILE CHECKSUM: 2b86b31322823cbfb6815bef67b32035ff7c0f8b

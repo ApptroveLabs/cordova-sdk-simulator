@@ -1,0 +1,22 @@
+{
+  "name": "cordova-plugin-apple-ads-attribution",
+  "version": "1.0.0",
+  "description": "Cordova plugin to get Apple Ads Attribution token from AdServices framework (iOS 14.3+)",
+  "cordova": {
+    "id": "cordova-plugin-apple-ads-attribution",
+    "platforms": [
+      "ios"
+    ]
+  },
+  "keywords": [
+    "cordova",
+    "apple",
+    "ads",
+    "attribution",
+    "adservices",
+    "ecosystem:cordova",
+    "cordova-ios"
+  ],
+  "author": "Cordmarket",
+  "license": "MIT"
+}

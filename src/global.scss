@@ -35,3 +35,48 @@
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import "@ionic/angular/css/palettes/dark.system.css";
+
+/* Global Styles for Better Visibility in Dark/Light Mode */
+:root {
+  --ion-text-color: #1a1a1a;
+  --ion-text-color-rgb: 26, 26, 26;
+  --ion-background-color: #ffffff;
+  --ion-background-color-rgb: 255, 255, 255;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ion-text-color: #f1f5f9;
+    --ion-text-color-rgb: 241, 245, 249;
+    --ion-background-color: #0f172a;
+    --ion-background-color-rgb: 15, 23, 42;
+  }
+}
+
+/* Ensure content has proper color */
+ion-content {
+  --color: var(--ion-text-color);
+}
+
+/* Input fields visibility */
+ion-input, ion-textarea {
+  --color: var(--ion-text-color);
+  --placeholder-color: #94a3b8;
+  --placeholder-opacity: 1;
+}
+
+/* Card visibility */
+ion-card {
+  --background: var(--ion-card-background, var(--ion-background-color));
+  --color: var(--ion-text-color);
+}
+
+/* List items */
+ion-item {
+  --color: var(--ion-text-color);
+}
+
+/* Toolbar */
+ion-toolbar {
+  --color: var(--ion-text-color);
+}

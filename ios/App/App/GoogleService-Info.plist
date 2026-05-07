@@ -3,30 +3,28 @@
 <plist version="1.0">
 <dict>
 	<key>API_KEY</key>
-	<string>AIzaSyC-dummy12345678901234567890123456</string>
+	<string>AIzaSyC60gNeOEnBuYJbvBr7YfTFi8eW-5aNocs</string>
 	<key>GCM_SENDER_ID</key>
-	<string>123456789012</string>
+	<string>960499328971</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.trackier.vistmarket</string>
+	<string>com.apptrove.cordmarket</string>
 	<key>PROJECT_ID</key>
-	<string>dummy-project-123456</string>
+	<string>cordmarket-906cd</string>
 	<key>STORAGE_BUCKET</key>
-	<string>dummy-project-123456.appspot.com</string>
+	<string>cordmarket-906cd.firebasestorage.app</string>
 	<key>IS_ADS_ENABLED</key>
-	<false/>
+	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
-	<false/>
+	<false></false>
 	<key>IS_APPINVITE_ENABLED</key>
-	<false/>
+	<true></true>
 	<key>IS_GCM_ENABLED</key>
-	<false/>
+	<true></true>
 	<key>IS_SIGNIN_ENABLED</key>
-	<false/>
+	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:123456789012:ios:abc123def456789</string>
-	<key>DATABASE_URL</key>
-	<string>https://dummy-project-123456.firebaseio.com</string>
+	<string>1:960499328971:ios:62553315e586b08d06784e</string>
 </dict>
 </plist>

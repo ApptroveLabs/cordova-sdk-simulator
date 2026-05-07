@@ -2,6 +2,12 @@
   --background: linear-gradient(180deg, #eefdfa 0%, #ffffff 44%, #f8fafc 100%);
 }
 
+@media (prefers-color-scheme: dark) {
+  .onboarding-page {
+    --background: linear-gradient(180deg, #0f172a 0%, #1e293b 44%, #334155 100%);
+  }
+}
+
 .onboarding-shell {
   min-height: 100%;
   display: flex;
@@ -47,6 +53,10 @@
     line-height: 1.1;
     font-weight: 900;
     color: #0f172a;
+
+    @media (prefers-color-scheme: dark) {
+      color: #f1f5f9;
+    }
   }
 
   p {
@@ -55,6 +65,10 @@
     color: #475569;
     font-size: 16px;
     line-height: 1.55;
+
+    @media (prefers-color-scheme: dark) {
+      color: #cbd5e1;
+    }
   }
 }
 
@@ -75,6 +89,12 @@
   border: 1px solid rgba(15, 118, 110, 0.1);
   box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
 
+  @media (prefers-color-scheme: dark) {
+    background: rgba(30, 41, 59, 0.9);
+    border: 1px solid rgba(15, 118, 110, 0.3);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.3);
+  }
+
   ion-icon {
     font-size: 24px;
     flex: 0 0 auto;
@@ -85,6 +105,10 @@
     color: #0f172a;
     font-size: 14px;
     font-weight: 800;
+
+    @media (prefers-color-scheme: dark) {
+      color: #f1f5f9;
+    }
   }
 
   span {
@@ -92,6 +116,10 @@
     color: #64748b;
     font-size: 12px;
     margin-top: 2px;
+
+    @media (prefers-color-scheme: dark) {
+      color: #94a3b8;
+    }
   }
 }
 

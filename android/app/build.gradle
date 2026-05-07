@@ -17,8 +17,21 @@ android {
         }
         multiDexEnabled true
     }
+    
+    signingConfigs {
+        release {
+            if (project.hasProperty('CORDMARKET_RELEASE_STORE_FILE')) {
+                storeFile file(CORDMARKET_RELEASE_STORE_FILE)
+                storePassword CORDMARKET_RELEASE_STORE_PASSWORD
+                keyAlias CORDMARKET_RELEASE_KEY_ALIAS
+                keyPassword CORDMARKET_RELEASE_KEY_PASSWORD
+            }
+        }
+    }
+    
     buildTypes {
         release {
+            signingConfig signingConfigs.release
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
