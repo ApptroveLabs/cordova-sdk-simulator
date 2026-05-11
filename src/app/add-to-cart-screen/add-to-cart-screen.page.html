@@ -22,8 +22,11 @@
           <img [src]="item.product.imageUrl" class="item-img" />
           <div class="item-info">
             <h3>{{ item.product.name }}</h3>
-            <p>{{ item.product.category }} · Qty {{ item.quantity }}</p>
-            <span class="price">${{ (item.product.price * item.quantity).toFixed(2) }}</span>
+            <p>{{ item.product.category }} <span *ngIf="item.quantity > 1">x {{ item.quantity }}</span></p>
+            <div class="price-container">
+              <span class="price">${{ (item.product.price * item.quantity).toFixed(2) }}</span>
+              <span class="unit-price" *ngIf="item.quantity > 1">(${{ item.product.price }} each)</span>
+            </div>
           </div>
           <ion-button fill="clear" color="danger" (click)="removeItem(item.product)">
             <ion-icon name="trash-outline"></ion-icon>

@@ -34,7 +34,7 @@ ion-toolbar {
   border-radius: 0 0 30px 30px;
   box-shadow: 0 10px 20px rgba(79, 70, 229, 0.15);
   position: relative;
-  z-index: 10;
+  z-index: 20; /* Higher z-index to stay above body */
   
   .custom-searchbar {
     --border-radius: 30px;
@@ -53,8 +53,10 @@ ion-toolbar {
 }
 
 .main-body {
-  padding-top: 20px;
+  padding-top: 25px; /* Enough padding to avoid overlapping the curved header */
   background: #f8fafc;
+  position: relative;
+  z-index: 10;
 }
 
 .section-container {
