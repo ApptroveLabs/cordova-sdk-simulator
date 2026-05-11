@@ -180,7 +180,8 @@ export class AppComponent {
       await this.getAppleAdsToken();
     }
 
-    const apptroveConfig = new AppTroveConfig(sdkKey, AppTroveEnvironment.Development);
+    const sdkEnv = environment.production ? AppTroveEnvironment.Production : AppTroveEnvironment.Development;
+    const apptroveConfig = new AppTroveConfig(sdkKey, sdkEnv);
 
     if (this.platform.is('ios')) {
       this.apptroveCordovaPlugin.updatePostbackConversion(10);
