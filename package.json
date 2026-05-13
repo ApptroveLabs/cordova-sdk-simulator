@@ -1,6 +1,6 @@
 {
   "name": "cordmarket",
-  "version": "0.0.1",
+  "version": "1.0.1",
   "author": "Ionic Framework",
   "homepage": "https://ionicframework.com/",
   "scripts": {
@@ -30,6 +30,7 @@
     "@capacitor/ios": "6.2.0",
     "@capacitor/keyboard": "6.0.3",
     "@capacitor/push-notifications": "^6.0.2",
+    "@capacitor/share": "^6.0.2",
     "@capacitor/status-bar": "6.0.2",
     "@ionic-native/core": "^5.36.0",
     "@ionic-native/deeplinks": "^5.36.0",

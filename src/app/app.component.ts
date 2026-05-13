@@ -13,6 +13,7 @@ import { EcommerceService } from './services/ecommerce.service';
 import { AppTroveEvents } from './utils/apptrove-events';
 import { DeepLinkingService } from './deep-linking/deep-linking-service';
 import { firstValueFrom } from 'rxjs';
+import { Share } from '@capacitor/share';
 
 @Component({
   selector: 'app-root',
@@ -155,11 +156,7 @@ export class AppComponent {
       }
 
       const email = await firstValueFrom(this.ecommerceService.userEmail$);
-      if (!email) {
-        this.router.navigate(['/login']);
-      } else {
-        this.router.navigate(['/home']);
-      }
+      this.router.navigate(['/home']);
     } finally {
       this.isSplashVisible = false;
       this.splashScreen.hide();
@@ -215,6 +212,8 @@ export class AppComponent {
       if (!this.platform.is('ios')) return;
       
       // Request tracking permission and get IDFA
+      // Added a small delay to ensure UI is ready for the system popup
+      await new Promise(resolve => setTimeout(resolve, 1000));
       const trackingResult = await AdvertisingId.requestTracking();
       console.log('Tracking permission result:', trackingResult.value);
       
@@ -288,13 +287,12 @@ export class AppComponent {
           description: 'The best premium shopping app.',
         }
       });
-      if (navigator.share) {
-        await navigator.share({
-          title: 'Cordmarket',
-          text: 'Check out Cordmarket! The best premium shopping app.\nDownload now: https://trackier58.u9ilnk.me/download',
-          url: dynamicLink
-        });
-      }
+      await Share.share({
+        title: 'Cordmarket',
+        text: 'Check out Cordmarket! The best premium shopping app.\nDownload now: https://trackier58.u9ilnk.me/download',
+        url: dynamicLink || 'https://trackier58.u9ilnk.me/download',
+        dialogTitle: 'Share Cordmarket',
+      });
     } catch (e) {
       console.error('Error sharing app:', e);
     }

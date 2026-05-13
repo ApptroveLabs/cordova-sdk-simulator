@@ -5,7 +5,7 @@ import { sessionOrDeeplinkGuard } from './guards/session-or-deeplink.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
-  { path: 'home', loadComponent: () => import('./home/home.page').then(m => m.HomePage), canMatch: [authGuard] },
+  { path: 'home', loadComponent: () => import('./home/home.page').then(m => m.HomePage) },
   {
     path: 'built-in-events',
     loadChildren: () => import('./built-in-events/built-in-events.module').then(m => m.BuiltInEventsPageModule),
@@ -109,8 +109,7 @@ const routes: Routes = [
   },
   {
     path: 'product-detail/:id',
-    loadChildren: () => import('./product-detail/product-detail.module').then( m => m.ProductDetailPageModule),
-    canActivate: [sessionOrDeeplinkGuard]
+    loadChildren: () => import('./product-detail/product-detail.module').then( m => m.ProductDetailPageModule)
   },
   {
     path: 'complete-event',
