@@ -4,6 +4,7 @@ import { EcommerceService, Product } from '../services/ecommerce.service';
 import { AppTroveCordovaPlugin, AppTroveEvent } from 'com.apptrove.cordova_sdk/ionic-native/apptrove/ngx';
 import { ToastController } from '@ionic/angular';
 import { AppTroveEvents } from '../utils/apptrove-events';
+import { Share } from '@capacitor/share';
 
 @Component({
   selector: 'app-product-detail',
@@ -89,15 +90,21 @@ export class ProductDetailPage implements OnInit {
           },
         });
         
-        if (navigator.share) {
-          await navigator.share({
-            title: this.product.name,
-            text: `Check out this premium ${this.product.name} on Cordmarket!`,
-            url: dynamicLink
-          });
-        }
+        await Share.share({
+          title: this.product.name,
+          text: `Check out this premium ${this.product.name} on Cordmarket!`,
+          url: dynamicLink || 'https://trackier58.u9ilnk.me',
+          dialogTitle: `Share ${this.product.name}`,
+        });
       } catch (e) {
         console.error('Error sharing:', e);
+        // Show a toast if sharing fails
+        const toast = await this.toastController.create({
+          message: 'Unable to share at this time',
+          duration: 2000,
+          color: 'warning'
+        });
+        await toast.present();
       }
     }
   }
