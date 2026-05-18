@@ -21,7 +21,7 @@
 #-renamesourcefileattribute SourceFile
 
 # Trackier SDK ProGuard rules
--keep class com.trackier.sdk.** { *; }
+-keep class com.apptrove.sdk.** { *; }
 -keep class com.google.android.gms.common.ConnectionResult {
     int SUCCESS;
 }
@@ -37,3 +37,21 @@
 -keep class kotlin.reflect.jvm.internal.** { *; }
 -keep class kotlin.** { *; }
 -dontwarn kotlin.**
+
+# Keep line numbers for crash reports
+-keepattributes *Annotation*
+-keepattributes Signature
+-keepattributes Exception
+
+# Capacitor and Cordova
+-keep class org.apache.cordova.** { *; }
+-keep class com.getcapacitor.** { *; }
+-keep @com.getcapacitor.annotation.CapacitorPlugin class * { *; }
+
+# Firebase
+-keep class com.google.firebase.** { *; }
+-dontwarn com.google.firebase.**
+
+# AndroidX
+-keep class androidx.** { *; }
+-dontwarn androidx.**
