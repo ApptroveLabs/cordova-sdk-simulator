@@ -24,6 +24,7 @@ export class AppComponent {
   isSplashVisible: boolean = true;
   isDeepLinkOpen: boolean = false;
   userEmail: string | null = null;
+  private initialRouteTimeout: any = null;
 
   constructor(
     private splashScreen: SplashScreen,
@@ -81,10 +82,13 @@ export class AppComponent {
   }
 
   private handleDeepLinkFromUrl(url: string) {
+    if (this.initialRouteTimeout) {
+      clearTimeout(this.initialRouteTimeout);
+    }
     try {
       const urlParams = new URL(url);
       const pathname = urlParams.pathname || '';
-      const productId = urlParams.searchParams.get('product_id') || '';
+      let productId = urlParams.searchParams.get('product_id') || urlParams.searchParams.get('productId') || '';
       const quantity = urlParams.searchParams.get('quantity') || '';
 
       if (pathname.startsWith('/product/') || productId) {
@@ -119,25 +123,39 @@ export class AppComponent {
           },
         });
         this.isSplashVisible = false;
-      } else if (pathname === '/d') {
-        if (quantity) {
-          this.router.navigate(['/cake-screen'], {
-            queryParams: {
-              productId,
-              quantity,
-              actionData: urlParams.searchParams.get('actionData'),
-              dlv: urlParams.searchParams.get('dlv'),
-              deeplink: '1',
-            },
-          });
-        } else if (productId) {
-          this.router.navigate(['/product-detail', productId], {
-            queryParams: { deeplink: '1' },
+      } else if (pathname === '/d' || pathname.startsWith('/d/')) {
+        // Automatically resolve short universal links if present
+        if (pathname.startsWith('/d/')) {
+          this.apptroveCordovaPlugin.resolveDeeplinkUrl(url).then(res => {
+            if (res && res.url) {
+              this.handleDeepLinkFromUrl(res.url);
+            } else {
+              this.checkInitialRoute();
+            }
+          }).catch(err => {
+            console.error('Error resolving short deep link:', err);
+            this.checkInitialRoute();
           });
         } else {
-          this.checkInitialRoute();
+          if (quantity) {
+            this.router.navigate(['/cake-screen'], {
+              queryParams: {
+                productId,
+                quantity,
+                actionData: urlParams.searchParams.get('actionData'),
+                dlv: urlParams.searchParams.get('dlv'),
+                deeplink: '1',
+              },
+            });
+          } else if (productId) {
+            this.router.navigate(['/product-detail', productId], {
+              queryParams: { deeplink: '1' },
+            });
+          } else {
+            this.checkInitialRoute();
+          }
+          this.isSplashVisible = false;
         }
-        this.isSplashVisible = false;
       } else {
         this.checkInitialRoute();
       }
@@ -148,6 +166,12 @@ export class AppComponent {
   }
 
   private async checkInitialRoute() {
+    if (this.isDeepLinkOpen) {
+      console.log('checkInitialRoute skipped: deep link redirection is currently active.');
+      this.isSplashVisible = false;
+      this.splashScreen.hide();
+      return;
+    }
     try {
       const seen = await firstValueFrom(this.ecommerceService.onboardingSeen$);
       if (!seen) {
@@ -200,7 +224,7 @@ export class AppComponent {
       .catch(error => console.error('Error initializing AppTrove SDK:', error))
       .finally(() => {
         if (!this.isDeepLinkOpen) {
-          setTimeout(() => {
+          this.initialRouteTimeout = setTimeout(() => {
             void this.checkInitialRoute();
           }, 3000);
         }
@@ -235,14 +259,75 @@ export class AppComponent {
   private setupDeferredDeeplinkCallback() {
     this.apptroveCordovaPlugin.setDeferredDeeplinkCallbackListener().subscribe({
       next: (deepLink: AppTroveDeepLink) => {
-        const url = deepLink.url ?? '';
-        if (!url) {
-          return;
+        console.log("Deferred Deeplink Callback received:", JSON.stringify(deepLink));
+        
+        if (this.initialRouteTimeout) {
+          clearTimeout(this.initialRouteTimeout);
+        }
+        
+        // 1. Mark that we have an active deep link redirect to prevent routing races
+        this.isDeepLinkOpen = true;
+
+        // 2. Extract values from sdkParams or URL query params
+        let productId = '';
+        let quantity = '';
+        let actionData = '';
+        let dlv = '';
+
+        if (deepLink.sdkParams) {
+          productId = deepLink.sdkParams['product_id'] || deepLink.sdkParams['productId'] || deepLink.sdkParams['id'] || '';
+          quantity = deepLink.sdkParams['quantity'] || deepLink.sdkParams['qty'] || '';
+          actionData = deepLink.sdkParams['actionData'] || deepLink.sdkParams['action_data'] || '';
+          dlv = deepLink.sdkParams['dlv'] || '';
         }
 
-        this.isDeepLinkOpen = true;
-        this.deferredDeeplinkService.setDeferredDeeplink(url);
-        this.handleDeepLinkFromUrl(url);
+        const url = deepLink.url ?? '';
+        if (url) {
+          this.deferredDeeplinkService.setDeferredDeeplink(url);
+          try {
+            const urlParams = new URL(url);
+            productId = productId || urlParams.searchParams.get('product_id') || urlParams.searchParams.get('productId') || '';
+            quantity = quantity || urlParams.searchParams.get('quantity') || '';
+            actionData = actionData || urlParams.searchParams.get('actionData') || '';
+            dlv = dlv || urlParams.searchParams.get('dlv') || '';
+          } catch (e) {
+            console.warn('Deferred link is not a full URL or cannot be parsed as one:', url);
+          }
+        }
+
+        // 3. Fallback to deepLinkValue or other attributes if necessary
+        dlv = dlv || deepLink.deepLinkValue || '';
+
+        // 4. Handle Redirection
+        if (productId) {
+          if (quantity) {
+            // Cake redirection
+            this.router.navigate(['/cake-screen'], {
+              queryParams: {
+                productId,
+                quantity,
+                actionData,
+                dlv,
+                deeplink: '1',
+              },
+            });
+          } else {
+            // Product Detail redirection
+            this.router.navigate(['/product-detail', productId], {
+              queryParams: { deeplink: '1' },
+            });
+          }
+          this.isSplashVisible = false;
+        } else if (dlv || url) {
+          // If we have dlv or url but no specific product, handle standard deep link parsing
+          if (url) {
+            this.handleDeepLinkFromUrl(url);
+          } else {
+            this.checkInitialRoute();
+          }
+        } else {
+          this.checkInitialRoute();
+        }
       },
       error: (error: any) => console.error("Error in deferred deeplink callback:", error)
     });
